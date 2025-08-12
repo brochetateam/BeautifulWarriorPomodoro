@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Beautiful Warrior · Pomodoro</title>
+  <meta name="theme-color" content="#ffebf4" id="meta-theme-color">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Staatliches&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ========== Reset y base ========== */
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --radius: 16px;
+      --ring-w: clamp(10px, 3.4vw, 18px);
+      --shadow-elev: 0 10px 30px rgba(0,0,0,0.18);
+      --glass: rgba(255, 255, 255, 0.55);
+      --glass-dark: rgba(0, 0, 0, 0.4);
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.35;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      transition: background 400ms ease, color 300ms ease;
+    }
+
+    h1, h2, .display {
+      font-family: 'Staatliches', 'Poppins', sans-serif;
+      letter-spacing: 0.5px;
+    }
+
+    a { color: inherit; }
+
+    /* ========== Temas ========== */
+    body[data-theme="beautiful"] {
+      --bg: radial-gradient(1200px 800px at 10% -10%, #ffe3f1 0%, #fff6fb 30%, #fff 70%) fixed,
+            linear-gradient(180deg, #fff 0%, #ffe9f6 100%) fixed;
+      --text: #2b1b2d;
+      --muted: #8d4e84;
+      --surface: rgba(255, 255, 255, 0.78);
+      --border: rgba(255, 20, 130, 0.16);
+      --accent: #ff3c91;
+      --accent-2: #ff8ac9;
+      --ring-track: rgba(255, 60, 145, 0.15);
+      --glow: rgba(255, 60, 145, 0.35);
+      --btn-text: #fff;
+      --btn-bg: #ff3c91;
+      --btn-bg-2: #ff5aa4;
+      --header-grad: linear-gradient(90deg, #ff3c91, #ff8ac9);
+      --chip: rgba(255, 60, 145, 0.12);
+      --chip-border: rgba(255, 60, 145, 0.25);
+    }
+
+    body[data-theme="warrior"] {
+      --bg: radial-gradient(1000px 600px at 80% -20%, #1a0006 0%, #0b0506 45%, #070708 100%) fixed,
+            linear-gradient(180deg, #070708 0%, #0a0a0c 100%) fixed;
+      --text: #f3f3f3;
+      --muted: #ff8a8a;
+      --surface: rgba(16, 16, 20, 0.74);
+      --border: rgba(255, 50, 50, 0.2);
+      --accent: #ff2438;
+      --accent-2: #ff5a66;
+      --ring-track: rgba(255, 36, 56, 0.14);
+      --glow: rgba(255, 40, 40, 0.35);
+      --btn-text: #fff;
+      --btn-bg: #ff2438;
+      --btn-bg-2: #ff4b59;
+      --header-grad: linear-gradient(90deg, #ff2438, #ff6b6b);
+      --chip: rgba(255, 36, 56, 0.12);
+      --chip-border: rgba(255, 36, 56, 0.25);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    }
+
+    /* ========== Layout ========== */
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    header.app {
+      position: relative;
+      padding: 16px 0 8px;
+    }
+
+    .app-bar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand h1 {
+      font-size: clamp(22px, 4.5vw, 34px);
+      line-height: 1;
+      margin: 0;
+      background: var(--header-grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 30px var(--glow);
+    }
+
+    .sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .right-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: var(--chip);
+      border: 1px solid var(--chip-border);
+      color: var(--text);
+      backdrop-filter: blur(6px);
+    }
+
+    .chip i { opacity: 0.9; }
+
+    /* Theme toggle button */
+    .theme-btn {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--text);
+      padding: 8px 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: transform 140ms ease, box-shadow 180ms ease, background 240ms ease;
+      box-shadow: var(--shadow-elev);
+      backdrop-filter: blur(6px);
+    }
+    .theme-btn:hover { transform: translateY(-1px); }
+    .theme-btn i { opacity: 0.9; }
+
+    /* ========== Decor flotante ========== */
+    .bg-decor {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .bg-decor span {
+      position: absolute;
+      bottom: -8vh;
+      opacity: 0.75;
+      filter: blur(0.3px);
+      animation: rise var(--dur) linear infinite;
+      transform: translateY(0) scale(var(--s, 1));
+    }
+    @keyframes rise {
+      from { transform: translateY(0) scale(var(--s, 1)); opacity: 0; }
+      10% { opacity: 0.65; }
+      to { transform: translateY(-120vh) scale(var(--s, 1)); opacity: 0; }
+    }
+
+    body[data-theme="beautiful"] .bg-decor span {
+      width: max(10px, 1.2vw);
+      height: max(10px, 1.2vw);
+      background: radial-gradient(circle at 30% 30%, #fff 0 20%, #ffb9d8 38%, #ff5aaa 80%, #ff2d7f 100%);
+      border-radius: 50% 60% 40% 60%;
+      box-shadow: 0 0 20px 2px rgba(255, 60, 145, 0.3);
+    }
+
+    body[data-theme="warrior"] .bg-decor span {
+      width: max(6px, 0.8vw);
+      height: max(6px, 0.8vw);
+      background: radial-gradient(circle at 40% 40%, #ffd7d7 0 18%, #ff6b6b 55%, #ff2a2a 100%);
+      border-radius: 50%;
+      box-shadow: 0 0 18px 2px rgba(255, 36, 56, 0.32);
+    }
+
+    /* ========== Card principal ========== */
+    .card {
+      position: relative;
+      margin: 16px auto 20px;
+      padding: clamp(14px, 3.5vw, 22px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: calc(var(--radius) + 6px);
+      box-shadow: var(--shadow-elev);
+      z-index: 1;
+      backdrop-filter: blur(8px);
+    }
+
+    .mode-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .mode-title {
+      font-size: clamp(18px, 4.3vw, 28px);
+      margin: 0;
+    }
+    .mode-sub { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+    /* ========== Timer Ring ========== */
+    .ring-wrap {
+      display: grid;
+      place-items: center;
+      padding: clamp(8px, 2.5vw, 16px);
+    }
+
+    .timer-ring {
+      --p: 100; /* 0..100 (porcentaje completado) */
+      position: relative;
+      width: min(78vw, 360px);
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      isolation: isolate;
+    }
+
+    .timer-ring::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background:
+        conic-gradient(var(--accent) 0 calc(var(--p)*1%), var(--ring-track) 0 100%);
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--ring-w)), #000 0);
+              mask: radial-gradient(farthest-side, transparent calc(100% - var(--ring-w)), #000 0);
+      filter: drop-shadow(0 8px 30px var(--glow));
+    }
+
+    .timer-core {
+      width: calc(100% - var(--ring-w) * 2);
+      height: calc(100% - var(--ring-w) * 2);
+      border-radius: inherit;
+      background:
+        radial-gradient(120% 120% at 20% 10%, rgba(255,255,255,0.45), transparent 40%),
+        rgba(255,255,255,0.18);
+      border: 1px solid var(--border);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 10px 40px rgba(0,0,0,0.15);
+      display: grid;
+      place-items: center;
+      backdrop-filter: blur(6px);
+      position: relative;
+      overflow: hidden;
+    }
+    body[data-theme="warrior"] .timer-core {
+      background:
+        radial-gradient(120% 120% at 20% 10%, rgba(255,255,255,0.07), transparent 40%),
+        rgba(0,0,0,0.25);
+    }
+
+    .time-display {
+      font-size: clamp(36px, 13vw, 74px);
+      line-height: 1;
+      letter-spacing: 1px;
+      font-weight: 800;
+      color: var(--text);
+      text-shadow: 0 2px 18px rgba(0,0,0,0.20);
+    }
+
+    .pips {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 14px;
+    }
+    .pip {
+      width: 14px; height: 14px; border-radius: 6px;
+      background: rgba(0,0,0,0.08);
+      border: 1px solid var(--border);
+    }
+    body[data-theme="beautiful"] .pip.completed { background: linear-gradient(180deg, #ff8ac9, #ff3c91); }
+    body[data-theme="warrior"] .pip.completed { background: linear-gradient(180deg, #ff6b6b, #ff2438); }
+
+    /* ========== Controles ========== */
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    button.btn {
+      appearance: none;
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      color: var(--btn-text);
+      background: linear-gradient(180deg, var(--btn-bg), var(--btn-bg-2));
+      box-shadow: 0 10px 20px -6px var(--glow);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 120ms ease, filter 160ms ease, opacity 160ms ease;
+    }
+    button.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    button.btn:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.04); }
+
+    .btn.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    /* ========== Footer ========== */
+    footer {
+      padding: 10px 0 18px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    /* ========== Modales ========== */
+    .modal {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.50);
+      display: grid; place-items: center;
+      visibility: hidden; opacity: 0;
+      transition: opacity 220ms ease, visibility 220ms ease;
+      z-index: 10;
+      padding: 18px;
+      backdrop-filter: blur(2px);
+    }
+    .modal.active { visibility: visible; opacity: 1; }
+
+    .modal-card {
+      width: min(560px, 96vw);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: var(--shadow-elev);
+    }
+    .modal-card h3 {
+      font-size: 22px;
+      margin: 8px 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--header-grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .modal-actions {
+      display: flex; gap: 10px; justify-content: flex-end; margin-top: 12px;
+    }
+
+    .grid {
+      display: grid; gap: 10px;
+    }
+    .grid.two { grid-template-columns: 1fr 1fr; }
+    @media (max-width: 560px) {
+      .grid.two { grid-template-columns: 1fr; }
+    }
+
+    label.small { font-size: 12px; color: var(--muted); }
+
+    input[type="number"], input[type="text"] {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.5);
+      padding: 10px 12px;
+      font-size: 15px;
+      color: var(--text);
+      outline: none;
+    }
+    body[data-theme="warrior"] input[type="number"],
+    body[data-theme="warrior"] input[type="text"] {
+      background: rgba(0,0,0,0.25);
+      color: #f3f3f3;
+    }
+
+    /* ========== Gato Hero ========== */
+    .cat-hero {
+      width: clamp(44px, 9vw, 74px);
+      height: clamp(44px, 9vw, 74px);
+      display: grid; place-items: center;
+      border-radius: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-elev);
+      backdrop-filter: blur(6px);
+      overflow: hidden;
+    }
+    .cat-hero svg {
+      width: 100%; height: 100%;
+      transform: translateY(1px);
+      animation: bob 3s ease-in-out infinite;
+    }
+    @keyframes bob {
+      0%, 100% { transform: translateY(1px); }
+      50% { transform: translateY(-2px); }
+    }
+    /* Mostrar variante del gato según tema */
+    .cat-hero [data-variant="beautiful"] { display: none; }
+    .cat-hero [data-variant="warrior"] { display: none; }
+    body[data-theme="beautiful"] .cat-hero [data-variant="beautiful"] { display: block; }
+    body[data-theme="warrior"] .cat-hero [data-variant="warrior"] { display: block; }
+
+    /* Pulsación final de cuenta regresiva */
+    .pulse { animation: pulse 900ms ease-in-out infinite alternate; }
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.04); }
+    }
+
+    /* Toast de puntos (simple) */
+    .toast {
+      position: fixed;
+      bottom: 18px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 999px;
+      box-shadow: var(--shadow-elev);
+      opacity: 0; visibility: hidden;
+      transition: 200ms ease;
+      z-index: 15;
+    }
+    .toast.show {
+      opacity: 1; visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+
+<body data-theme="beautiful">
+  <!-- Fondo decorativo -->
+  <div class="bg-decor" aria-hidden="true" id="decor"></div>
+
+  <header class="app">
+    <div class="container app-bar">
+      <div class="brand">
+        <!-- Gato con bandana -->
+        <div class="cat-hero" title="Beautiful Warrior">
+          <!-- Beautiful (cute) -->
+          <svg viewBox="0 0 100 100" data-variant="beautiful" aria-hidden="true">
+            <defs>
+              <linearGradient id="bandanaPink" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ff8ac9"/>
+                <stop offset="100%" stop-color="#ff3c91"/>
+              </linearGradient>
+            </defs>
+            <!-- Cabeza -->
+            <circle cx="50" cy="54" r="30" fill="#fff" stroke="#ffb3d5" stroke-width="2"/>
+            <!-- Orejas -->
+            <path d="M30,36 L22,20 L36,28 Z" fill="#fff" stroke="#ffb3d5" />
+            <path d="M70,36 L78,20 L64,28 Z" fill="#fff" stroke="#ffb3d5" />
+            <!-- Bandana -->
+            <path d="M20,45 Q50,28 80,45 L80,50 Q50,35 20,50 Z" fill="url(#bandanaPink)" />
+            <circle cx="72" cy="50" r="5" fill="url(#bandanaPink)" />
+            <!-- Ojos -->
+            <circle cx="40" cy="60" r="4.5" fill="#333" />
+            <circle cx="60" cy="60" r="4.5" fill="#333" />
+            <!-- Nariz corazón -->
+            <path d="M50 66c-2-4-8 0-4 3 2 1 4-2 4-2s2 3 4 2c4-3-2-7-4-3z" fill="#ff4c86"/>
+            <!-- Mejillas -->
+            <circle cx="34" cy="66" r="3.2" fill="#ffd1e6" />
+            <circle cx="66" cy="66" r="3.2" fill="#ffd1e6" />
+            <!-- Bigotes -->
+            <path d="M20 62 H34 M20 67 H32" stroke="#e7a7c8" stroke-width="2" stroke-linecap="round"/>
+            <path d="M80 62 H66 M80 67 H68" stroke="#e7a7c8" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+
+          <!-- Warrior (scar) -->
+          <svg viewBox="0 0 100 100" data-variant="warrior" aria-hidden="true">
+            <defs>
+              <linearGradient id="bandanaRed" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ff6b6b"/>
+                <stop offset="100%" stop-color="#ff2438"/>
+              </linearGradient>
+            </defs>
+            <!-- Cabeza -->
+            <circle cx="50" cy="54" r="30" fill="#0e0e12" stroke="#5c1117" stroke-width="2"/>
+            <!-- Orejas (una muescada) -->
+            <path d="M30,36 L22,20 L36,28 Z" fill="#0e0e12" stroke="#5c1117" />
+            <path d="M70,36 L78,20 L64,28 Z" fill="#0e0e12" stroke="#5c1117" />
+            <polygon points="78,20 73,26 70,20" fill="#0e0e12" />
+            <!-- Bandana -->
+            <path d="M20,45 Q50,28 80,45 L80,50 Q50,35 20,50 Z" fill="url(#bandanaRed)" />
+            <path d="M74,48 l6,3 -5,5" fill="url(#bandanaRed)" />
+            <!-- Ojo izquierdo normal -->
+            <circle cx="40" cy="60" r="4.5" fill="#f3f3f3" />
+            <!-- Ojo derecho más afilado -->
+            <path d="M56,58 q4,0 8,2 q-4,4-8,4 q-4,0-8-4 q4-2 8-2z" fill="#f3f3f3" />
+            <!-- Nariz -->
+            <path d="M46 66 L50 70 L54 66 Z" fill="#ff3c3c"/>
+            <!-- Cicatriz -->
+            <path d="M68 48 L54 64" stroke="#ff6b6b" stroke-width="2.2" stroke-linecap="round"/>
+            <!-- Bigotes -->
+            <path d="M20 62 H34 M20 67 H32" stroke="#6a2a2a" stroke-width="2" stroke-linecap="round"/>
+            <path d="M80 62 H66 M80 67 H68" stroke="#6a2a2a" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <div>
+          <h1>Beautiful Warrior</h1>
+          <div class="sub">Pomodoro para artistas que luchan bonito ✨</div>
+        </div>
+      </div>
+
+      <div class="right-controls">
+        <button class="theme-btn" id="theme-btn" aria-label="Cambiar tema">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          <span id="theme-label">Beautiful</span>
+        </button>
+        <div class="chip" title="Puntos">
+          <span>🏆</span>
+          <strong id="contador-puntos">0</strong>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <div class="mode-line">
+        <div>
+          <h2 class="mode-title" id="timer-mode">¡HORA DE TRABAJAR!</h2>
+          <div class="mode-sub" id="timer-instruction">Enfócate en una sola tarea. ¡Tú puedes!</div>
+        </div>
+        <button class="theme-btn" id="settings-btn" aria-haspopup="dialog">
+          <i class="fa-solid fa-gear"></i>
+          Ajustes
+        </button>
+      </div>
+
+      <div class="ring-wrap">
+        <div class="timer-ring" id="timer-ring" style="--p: 0;">
+          <div class="timer-core">
+            <div class="time-display" id="time-text">25:00</div>
+          </div>
+        </div>
+        <div class="pips" aria-label="Contador de Pomodoros">
+          <div class="pip"></div>
+          <div class="pip"></div>
+          <div class="pip"></div>
+          <div class="pip"></div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="start-btn" class="btn"><i class="fa-solid fa-play"></i> Empezar</button>
+        <button id="pause-btn" class="btn secondary" disabled><i class="fa-solid fa-pause"></i> Pausar</button>
+        <button id="skip-btn" class="btn secondary"><i class="fa-solid fa-forward"></i> Saltar</button>
+        <button id="reset-btn" class="btn secondary"><i class="fa-solid fa-rotate-right"></i> Reiniciar</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2025 Beautiful Warrior · Little Bug Games · Productividad con estilo
+    <div style="margin-top:8px;">
+      <button id="reglas-btn" class="theme-btn"><i class="fa-solid fa-book"></i> Reglas del juego</button>
+    </div>
+  </footer>
+
+  <!-- Modales -->
+  <!-- Ajustes -->
+  <div id="modal-config" class="modal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+    <div class="modal-card">
+      <h3 id="settings-title"><i class="fa-solid fa-sliders"></i> Ajustes</h3>
+      <div class="grid two">
+        <div>
+          <label class="small" for="work-time">Trabajo (min)</label>
+          <input type="number" id="work-time" min="1" max="90" value="25">
+        </div>
+        <div>
+          <label class="small" for="break-time">Descanso corto (min)</label>
+          <input type="number" id="break-time" min="1" max="30" value="5">
+        </div>
+        <div>
+          <label class="small" for="long-break-time">Descanso largo (min)</label>
+          <input type="number" id="long-break-time" min="5" max="60" value="10">
+        </div>
+        <div>
+          <label class="small" for="auto-start">Autoiniciar siguiente fase</label>
+          <input type="text" id="auto-start" value="Sí/No" disabled style="opacity:.6;cursor:not-allowed;">
+          <div class="small" style="margin-top:4px;">(Para mantenerlo simple, lo dejamos manual por ahora 😉)</div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button id="cerrar-config" class="btn"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reglas -->
+  <div id="modal-reglas" class="modal" role="dialog" aria-modal="true" aria-labelledby="rules-title">
+    <div class="modal-card">
+      <h3 id="rules-title"><i class="fa-solid fa-book"></i> Reglas del Pomodoro</h3>
+      <div class="grid" style="color:var(--text);">
+        <div>1) Trabaja enfocado durante el tiempo de trabajo.</div>
+        <div>2) Toma un descanso corto después de cada pomodoro.</div>
+        <div>3) Cada 4 pomodoros, descanso largo.</div>
+        <div>4) Completa los desafíos de descanso para sumar puntos.</div>
+        <div>5) Cuida tu cuerpo: levántate, respira, hidrátate. 🫶</div>
+      </div>
+      <div class="modal-actions">
+        <button id="cerrar-reglas" class="btn"><i class="fa-solid fa-check"></i> Entendido</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logro -->
+  <div id="modal-logro" class="modal" role="dialog" aria-modal="true" aria-labelledby="achieve-title">
+    <div class="modal-card" style="text-align:center;">
+      <h3 id="achieve-title"><i class="fa-solid fa-trophy"></i> ¡Logro desbloqueado!</h3>
+      <div style="font-size:18px; margin: 8px 0; font-weight:700;" id="logro-titulo">¡Primer Pomodoro!</div>
+      <div style="margin-bottom: 12px;" id="logro-descripcion">Has completado tu primera sesión de trabajo</div>
+      <div style="color:var(--muted); margin-bottom:12px;">⭐ ⭐ ⭐</div>
+      <div class="modal-actions" style="justify-content:center;">
+        <button id="cerrar-logro" class="btn"><i class="fa-solid fa-star"></i> ¡Épico!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Desafío -->
+  <div id="modal-desafio" class="modal" role="dialog" aria-modal="true" aria-labelledby="challenge-title">
+    <div class="modal-card" style="text-align:center;">
+      <h3 id="challenge-title"><i class="fa-solid fa-fire-alt"></i> ¡Desafío de descanso!</h3>
+      <div style="font-size:18px; margin: 8px 0 14px;" id="modal-desafio-text">¡Toma un vaso de agua! 💧</div>
+      <div class="modal-actions" style="justify-content:center;">
+        <button id="modal-desafio-complete-btn" class="btn"><i class="fa-solid fa-check"></i> Completar desafío (+5)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">+5 puntos</div>
+
+  <script>
+    // ========= Estado y elementos =========
+    const themeBtn = document.getElementById('theme-btn');
+    const themeLabel = document.getElementById('theme-label');
+    const metaThemeColor = document.getElementById('meta-theme-color');
+
+    const timerMode = document.getElementById('timer-mode');
+    const timerInstruction = document.getElementById('timer-instruction');
+    const timeText = document.getElementById('time-text');
+    const timerRing = document.getElementById('timer-ring');
+
+    const startBtn = document.getElementById('start-btn');
+    const pauseBtn = document.getElementById('pause-btn');
+    const skipBtn = document.getElementById('skip-btn');
+    const resetBtn = document.getElementById('reset-btn');
+
+    const settingsBtn = document.getElementById('settings-btn');
+    const modalConfig = document.getElementById('modal-config');
+    const cerrarConfig = document.getElementById('cerrar-config');
+    const workTimeInput = document.getElementById('work-time');
+    const breakTimeInput = document.getElementById('break-time');
+    const longBreakTimeInput = document.getElementById('long-break-time');
+
+    const modalReglas = document.getElementById('modal-reglas');
+    const cerrarReglas = document.getElementById('cerrar-reglas');
+    const reglasBtn = document.getElementById('reglas-btn');
+
+    const modalLogro = document.getElementById('modal-logro');
+    const cerrarLogro = document.getElementById('cerrar-logro');
+    const logroTitulo = document.getElementById('logro-titulo');
+    const logroDescripcion = document.getElementById('logro-descripcion');
+
+    const modalDesafio = document.getElementById('modal-desafio');
+    const modalDesafioText = document.getElementById('modal-desafio-text');
+    const modalDesafioCompleteBtn = document.getElementById('modal-desafio-complete-btn');
+
+    const puntosElement = document.getElementById('contador-puntos');
+    const pips = document.querySelectorAll('.pip');
+    const decor = document.getElementById('decor');
+    const toast = document.getElementById('toast');
+
+    // Estado
+    let timer = null;
+    let isRunning = false;
+    let isPaused = false;
+    let currentMode = 'work'; // 'work' | 'break' | 'longBreak'
+    let timeLeft = 25 * 60;
+    let totalTime = 25 * 60;
+    let pomodoroCount = 0;
+    let puntos = 0;
+    let audioContext;
+    let lastTick = null;
+
+    // Desafíos
+    const challenges = [
+      "¡Haz 5 respiraciones profundas! 🌬️",
+      "¡Toma un vaso de agua! 💧",
+      "¡Estírate como un gato! 🐱",
+      "¡Camina 1 minuto! 🚶",
+      "¡Mira lejos 20s para relajar la vista! 👀",
+      "¡Dibuja un mini garabato! ✏️",
+      "¡Sacude los brazos 10s! 💪",
+      "¡Cierra los ojos y sonríe 10s! 😊"
+    ];
+
+    // Logros
+    const allAchievements = [
+      { id: 'first-pomodoro', title: '¡Primer Pomodoro!', description: 'Completaste tu primera sesión de trabajo', points: 10, earned: false },
+      { id: 'five-pomodoros', title: 'Máquina de Productividad', description: 'Completaste 5 Pomodoros', points: 25, earned: false }
+      // Puedes añadir más: rachas diarias, pomodoros sin pausa, etc.
+    ];
+
+    // ========= Utilidades =========
+    function formatTime(s) {
+      const m = Math.floor(s / 60).toString().padStart(2, '0');
+      const sec = Math.floor(s % 60).toString().padStart(2, '0');
+      return `${m}:${sec}`;
+    }
+
+    function setDocTitle() {
+      document.title = `${formatTime(timeLeft)} · Beautiful Warrior`;
+    }
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 1400);
+    }
+
+    function vibrate(pattern = [50, 30, 50]) {
+      if (navigator.vibrate) navigator.vibrate(pattern);
+    }
+
+    function playAlarm() {
+      try {
+        if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioContext.state === 'suspended') audioContext.resume();
+        const o = audioContext.createOscillator();
+        const g = audioContext.createGain();
+        o.type = 'square';
+        o.frequency.setValueAtTime(880, audioContext.currentTime);
+        g.gain.setValueAtTime(0.0001, audioContext.currentTime);
+        o.connect(g); g.connect(audioContext.destination);
+        o.start();
+        g.gain.exponentialRampToValueAtTime(0.3, audioContext.currentTime + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.4);
+        o.stop(audioContext.currentTime + 0.45);
+      } catch (e) { /* noop */ }
+      vibrate([70, 60, 70]);
+    }
+
+    function updateRing() {
+      const progress = ((totalTime - timeLeft) / totalTime) * 100;
+      timerRing.style.setProperty('--p', progress.toFixed(2));
+      // Efecto de pulso en últimos 10s
+      if (isRunning && timeLeft <= 10) {
+        timerRing.classList.add('pulse');
+      } else {
+        timerRing.classList.remove('pulse');
+      }
+    }
+
+    function updatePips() {
+      const c = pomodoroCount % 4;
+      pips.forEach((p, i) => {
+        if (i < c) p.classList.add('completed');
+        else p.classList.remove('completed');
+      });
+    }
+
+    function saveState() {
+      localStorage.setItem('BW_points', puntos);
+      localStorage.setItem('BW_pomodoros', pomodoroCount);
+      localStorage.setItem('BW_theme', document.body.getAttribute('data-theme'));
+      localStorage.setItem('BW_work', workTimeInput.value);
+      localStorage.setItem('BW_break', breakTimeInput.value);
+      localStorage.setItem('BW_longbreak', longBreakTimeInput.value);
+      localStorage.setItem('BW_achievements', JSON.stringify(allAchievements));
+    }
+
+    function loadState() {
+      const t = localStorage.getItem('BW_theme');
+      if (t) setTheme(t);
+      const pts = localStorage.getItem('BW_points');
+      puntos = pts ? parseInt(pts, 10) : 0;
+      puntosElement.textContent = puntos;
+
+      const pCount = localStorage.getItem('BW_pomodoros');
+      pomodoroCount = pCount ? parseInt(pCount, 10) : 0;
+      updatePips();
+
+      const w = localStorage.getItem('BW_work'); if (w) workTimeInput.value = w;
+      const b = localStorage.getItem('BW_break'); if (b) breakTimeInput.value = b;
+      const lb = localStorage.getItem('BW_longbreak'); if (lb) longBreakTimeInput.value = lb;
+
+      try {
+        const savedAch = JSON.parse(localStorage.getItem('BW_achievements') || '[]');
+        if (savedAch.length) {
+          for (const a of allAchievements) {
+            const found = savedAch.find(x => x.id === a.id);
+            if (found) a.earned = !!found.earned;
+          }
+        }
+      } catch (_) {}
+    }
+
+    function setTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      themeLabel.textContent = theme === 'beautiful' ? 'Beautiful' : 'Warrior';
+      metaThemeColor.setAttribute('content', theme === 'beautiful' ? '#ffebf4' : '#0b0506');
+    }
+
+    function toggleTheme() {
+      const next = document.body.getAttribute('data-theme') === 'beautiful' ? 'warrior' : 'beautiful';
+      setTheme(next);
+      saveState();
+      // regen decor para variar
+      spawnDecor();
+    }
+
+    // ========= Modo y flujo =========
+    function setupMode(mode) {
+      currentMode = mode;
+      if (mode === 'work') {
+        totalTime = parseInt(workTimeInput.value, 10) * 60;
+        timerMode.textContent = '¡HORA DE TRABAJAR!';
+        timerInstruction.textContent = 'Enfócate en una sola tarea. ¡Tú puedes!';
+      } else if (mode === 'break') {
+        totalTime = parseInt(breakTimeInput.value, 10) * 60;
+        timerMode.textContent = '¡DESCANSO CORTO!';
+        timerInstruction.textContent = 'Muévete un poco y recarga energía.';
+        showRandomChallenge();
+      } else {
+        totalTime = parseInt(longBreakTimeInput.value, 10) * 60;
+        timerMode.textContent = '¡DESCANSO LARGO!';
+        timerInstruction.textContent = 'Tómate un respiro más profundo. Te lo ganaste.';
+        showRandomChallenge();
+      }
+      timeLeft = totalTime;
+      timeText.textContent = formatTime(timeLeft);
+      updateRing();
+      setDocTitle();
+    }
+
+    function tick() {
+      if (!isRunning) return;
+      const now = Date.now();
+      // Pequeña corrección de drift
+      if (lastTick) {
+        const delta = Math.max(0, Math.round((now - lastTick) / 1000));
+        if (delta > 0) {
+          timeLeft -= 1;
+          lastTick = now;
+        }
+      } else {
+        timeLeft -= 1;
+        lastTick = now;
+      }
+
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        isRunning = false;
+        startBtn.disabled = false;
+        pauseBtn.disabled = true;
+        playAlarm();
+        handleTimerEnd();
+      }
+
+      timeText.textContent = formatTime(Math.max(0, timeLeft));
+      setDocTitle();
+      updateRing();
+    }
+
+    function startTimer() {
+      if (isRunning) return;
+      isRunning = true;
+      isPaused = false;
+      startBtn.disabled = true;
+      pauseBtn.disabled = false;
+      lastTick = Date.now();
+      timer = setInterval(tick, 1000);
+      // desbloqueo de audio en iOS
+      try { if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)(); } catch (_) {}
+    }
+
+    function pauseTimer() {
+      if (!isRunning) return;
+      clearInterval(timer);
+      isRunning = false;
+      isPaused = true;
+      startBtn.disabled = false;
+      pauseBtn.disabled = true;
+      startBtn.innerHTML = '<i class="fa-solid fa-play"></i> Continuar';
+    }
+
+    function skipTimer() {
+      clearInterval(timer);
+      isRunning = false;
+      isPaused = false;
+      startBtn.disabled = false;
+      pauseBtn.disabled = true;
+      startBtn.innerHTML = '<i class="fa-solid fa-play"></i> Empezar';
+      handleTimerEnd();
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      isRunning = false;
+      isPaused = false;
+      startBtn.disabled = false;
+      pauseBtn.disabled = true;
+      startBtn.innerHTML = '<i class="fa-solid fa-play"></i> Empezar';
+      setupMode(currentMode);
+    }
+
+    function handleTimerEnd() {
+      if (currentMode === 'work') {
+        pomodoroCount++;
+        puntos += 10;
+        puntosElement.textContent = puntos;
+        showToast('+10 puntos');
+        updatePips();
+        checkAchievements();
+        if (pomodoroCount % 4 === 0) setupMode('longBreak');
+        else setupMode('break');
+      } else {
+        setupMode('work');
+      }
+      saveState();
+    }
+
+    // ========= Desafíos y logros =========
+    function showRandomChallenge() {
+      const i = Math.floor(Math.random() * challenges.length);
+      modalDesafioText.textContent = challenges[i];
+      modalDesafio.classList.add('active');
+    }
+
+    function completeChallenge() {
+      puntos += 5;
+      puntosElement.textContent = puntos;
+      showToast('+5 puntos');
+      modalDesafio.classList.remove('active');
+      saveState();
+    }
+
+    function showAchievement(achievement) {
+      logroTitulo.textContent = achievement.title;
+      logroDescripcion.textContent = achievement.description;
+      modalLogro.classList.add('active');
+    }
+
+    function checkAchievements() {
+      allAchievements.forEach(a => {
+        if (!a.earned) {
+          let ok = false;
+          if (a.id === 'first-pomodoro' && pomodoroCount >= 1) ok = true;
+          if (a.id === 'five-pomodoros' && pomodoroCount >= 5) ok = true;
+          if (ok) {
+            a.earned = true;
+            puntos += a.points;
+            puntosElement.textContent = puntos;
+            showAchievement(a);
+          }
+        }
+      });
+    }
+
+    // ========= Modales =========
+    settingsBtn.addEventListener('click', () => modalConfig.classList.add('active'));
+    cerrarConfig.addEventListener('click', () => {
+      modalConfig.classList.remove('active');
+      if (!isRunning) setupMode(currentMode);
+      saveState();
+    });
+
+    reglasBtn.addEventListener('click', () => modalReglas.classList.add('active'));
+    cerrarReglas.addEventListener('click', () => modalReglas.classList.remove('active'));
+
+    cerrarLogro.addEventListener('click', () => modalLogro.classList.remove('active'));
+    modalDesafioCompleteBtn.addEventListener('click', completeChallenge);
+
+    // ========= Eventos controles =========
+    startBtn.addEventListener('click', startTimer);
+    pauseBtn.addEventListener('click', pauseTimer);
+    skipBtn.addEventListener('click', skipTimer);
+    resetBtn.addEventListener('click', resetTimer);
+
+    workTimeInput.addEventListener('change', () => { if (!isRunning) setupMode('work'); saveState(); });
+    breakTimeInput.addEventListener('change', () => { if (!isRunning && (currentMode !== 'work')) setupMode(currentMode); saveState(); });
+    longBreakTimeInput.addEventListener('change', () => { if (!isRunning && currentMode === 'longBreak') setupMode('longBreak'); saveState(); });
+
+    themeBtn.addEventListener('click', toggleTheme);
+
+    // ========= Decor flotante =========
+    function spawnDecor() {
+      decor.innerHTML = '';
+      const isBeautiful = document.body.getAttribute('data-theme') === 'beautiful';
+      const n = isBeautiful ? 14 : 18;
+      for (let i = 0; i < n; i++) {
+        const s = document.createElement('span');
+        const left = Math.random() * 100;
+        s.style.left = left + '%';
+        s.style.setProperty('--dur', (12 + Math.random() * 16) + 's');
+        s.style.setProperty('--s', (0.6 + Math.random() * 1.2).toFixed(2));
+        s.style.animationDelay = (-Math.random() * 10) + 's';
+        decor.appendChild(s);
+      }
+    }
+
+    // ========= Init =========
+    function init() {
+      loadState();
+      setupMode('work');
+      startBtn.innerHTML = '<i class="fa-solid fa-play"></i> Empezar';
+      pauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i> Pausar';
+      skipBtn.innerHTML = '<i class="fa-solid fa-forward"></i> Saltar';
+      resetBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Reiniciar';
+      spawnDecor();
+      setDocTitle();
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+
+    // Cerrar modales con fondo
+    [modalConfig, modalReglas, modalLogro, modalDesafio].forEach(m => {
+      m?.addEventListener('click', (e) => {
+        if (e.target === m) m.classList.remove('active');
+      });
+    });
+
+    // Visibilidad: pausar cuando pestaña oculta (opcional)
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && isRunning) {
+        // opcional: pausar automáticamente
+        // pauseTimer();
+      }
+    });
+  </script>
+</body>
+</html>
