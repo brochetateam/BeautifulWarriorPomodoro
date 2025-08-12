@@ -12,17 +12,13 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  <!-- Fonts + Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Staatliches&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
     *, *::before, *::after { box-sizing: border-box; }
-    :root {
-      --radius: 16px;
-      --ring-w: clamp(10px, 3.4vw, 18px);
-      --shadow-elev: 0 10px 30px rgba(0,0,0,0.18);
-    }
+    :root { --radius: 16px; --ring-w: clamp(10px, 3.4vw, 18px); --shadow-elev: 0 10px 30px rgba(0,0,0,0.18); }
+
     html, body { height: 100%; margin: 0; }
     body {
       font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
@@ -40,10 +36,10 @@
       --text: #2b1b2d;
       --muted: #8d4e84;
       --surface: rgba(255, 255, 255, 0.78);
-      --border: rgba(255, 20, 130, 0.16);
+      --border: rgba(255, 20, 130, 0.18);
       --accent: #ff3c91;
       --accent-2: #ff8ac9;
-      --ring-track: rgba(255, 60, 145, 0.18);
+      --ring-track: rgba(255, 60, 145, 0.20);
       --glow: rgba(255, 60, 145, 0.35);
       --btn-text: #fff;
       --btn-bg: #ff3c91;
@@ -57,18 +53,18 @@
             linear-gradient(180deg, #0a0a0c 0%, #0f0f12 100%) fixed;
       --text: #f7f7f9;
       --muted: #ffb0b4;
-      --surface: rgba(34, 34, 40, 0.88);
-      --border: rgba(255, 120, 130, 0.38);
+      --surface: rgba(34, 34, 40, 0.92);
+      --border: rgba(255, 120, 130, 0.45);
       --accent: #ff3a4a;
       --accent-2: #ff7a85;
-      --ring-track: rgba(255, 95, 105, 0.32);
-      --glow: rgba(255, 60, 70, 0.42);
+      --ring-track: rgba(255, 95, 105, 0.38);
+      --glow: rgba(255, 60, 70, 0.48);
       --btn-text: #fff;
       --btn-bg: #ff3a4a;
       --btn-bg-2: #ff6b76;
       --header-grad: linear-gradient(90deg, #ff3a4a, #ff8b94);
       --chip: rgba(255, 58, 74, 0.16);
-      --chip-border: rgba(255, 120, 130, 0.4);
+      --chip-border: rgba(255, 120, 130, 0.45);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -80,70 +76,46 @@
 
     .app-bar { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; position: relative; }
     .brand { display: flex; align-items: center; gap: 12px; }
-
     .brand h1 {
-      font-size: clamp(22px, 4.2vw, 32px);
-      line-height: 1; margin: 0;
+      font-size: clamp(22px, 4.2vw, 32px); line-height: 1; margin: 0;
       background: var(--header-grad); -webkit-background-clip: text; background-clip: text; color: transparent;
       text-shadow: 0 2px 30px var(--glow);
     }
-    .product-badge {
-      margin-left: 8px;
-      padding: 4px 10px; border-radius: 999px; font-weight: 800; letter-spacing: 1px;
-      background: linear-gradient(180deg, var(--btn-bg), var(--btn-bg-2)); color: #fff; font-size: 12px;
-      box-shadow: 0 8px 18px -6px var(--glow);
-      align-self: flex-start;
-    }
+    .product-badge { margin-left: 8px; padding: 4px 10px; border-radius: 999px; font-weight: 800; letter-spacing: 1px;
+      background: linear-gradient(180deg, var(--btn-bg), var(--btn-bg-2)); color: #fff; font-size: 42px; box-shadow: 0 8px 18px -6px var(--glow); align-self: flex-start; }
     .product-badge.product-mobile { display: none; }
     .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
     .right-controls { display: flex; align-items: center; gap: 8px; }
-    .chip {
-      display: inline-flex; align-items: center; gap: 6px;
-      border-radius: 999px; padding: 8px 12px; background: var(--chip); border: 1px solid var(--chip-border);
-      color: var(--text); backdrop-filter: blur(6px);
-    }
+    .right-actions-row { display: flex; gap: 8px; align-items: center; }
+    .chip { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 8px 12px; background: var(--chip); border: 1px solid var(--chip-border); color: var(--text); backdrop-filter: blur(6px); }
 
-    .theme-btn {
+    .theme-btn, .install-btn {
       border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text);
       padding: 8px 12px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
-      transition: transform 140ms ease, box-shadow 180ms ease, background 240ms ease; box-shadow: var(--shadow-elev);
-      backdrop-filter: blur(6px);
+      transition: transform 140ms ease, box-shadow 180ms ease, background 240ms ease; box-shadow: var(--shadow-elev); backdrop-filter: blur(6px);
     }
-    .theme-btn:hover { transform: translateY(-1px); }
+    .theme-btn:hover, .install-btn:hover { transform: translateY(-1px); }
 
-    /* Decor */
+    /* Decor animado */
     .bg-decor { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
     .bg-decor span { position: absolute; bottom: -8vh; opacity: 0.75; filter: blur(0.3px); animation: rise var(--dur) linear infinite; transform: translateY(0) scale(var(--s, 1)); }
     @keyframes rise { from { transform: translateY(0) scale(var(--s, 1)); opacity: 0; } 10% { opacity: 0.65; } to { transform: translateY(-120vh) scale(var(--s, 1)); opacity: 0; } }
-    body[data-theme="beautiful"] .bg-decor span {
-      width: max(10px, 1.2vw); height: max(10px, 1.2vw);
-      background: radial-gradient(circle at 30% 30%, #fff 0 20%, #ffb9d8 38%, #ff5aaa 80%, #ff2d7f 100%); border-radius: 50% 60% 40% 60%;
-      box-shadow: 0 0 20px 2px rgba(255, 60, 145, 0.3);
-    }
-    body[data-theme="warrior"] .bg-decor span {
-      width: max(6px, 0.8vw); height: max(6px, 0.8vw);
-      background: radial-gradient(circle at 40% 40%, #ffd7d7 0 18%, #ff6b6b 55%, #ff2a2a 100%); border-radius: 50%;
-      box-shadow: 0 0 18px 2px rgba(255, 36, 56, 0.32);
-    }
 
-    /* Card */
-    .card {
-      position: relative; margin: 16px auto 20px; padding: clamp(14px, 3.5vw, 22px);
-      background: var(--surface); border: 1px solid var(--border); border-radius: calc(var(--radius) + 6px); box-shadow: var(--shadow-elev);
-      z-index: 1; backdrop-filter: blur(8px);
-    }
+    /* Animación de entrada (no bloquea UI) */
+    .intro { opacity: 0; transform: translateY(16px); animation: fadeUp .6s ease forwards; }
+    .intro-delayed { opacity: 0; transform: translateY(16px); animation: fadeUp .8s .1s ease forwards; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* Card principal */
+    .card { position: relative; margin: 16px auto 20px; padding: clamp(14px, 3.5vw, 22px); background: var(--surface); border: 1px solid var(--border); border-radius: calc(var(--radius) + 6px); box-shadow: var(--shadow-elev); z-index: 1; backdrop-filter: blur(8px); }
     .mode-line { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; }
     .mode-title { font-size: clamp(18px, 4.3vw, 28px); margin: 0; text-align: left; }
     .mode-sub { color: var(--muted); font-size: 14px; margin-top: 4px; text-align: left; }
 
-    /* Timer Ring */
+    /* Reloj */
     .ring-wrap { position: relative; display: grid; place-items: center; padding: clamp(8px, 2.5vw, 16px); }
-    .timer-ring {
-      --p: 0;
-      position: relative; width: min(78vw, 360px); aspect-ratio: 1 / 1; border-radius: 50%;
-      display: grid; place-items: center; isolation: isolate;
-    }
+    .timer-ring { --p: 0; position: relative; width: min(78vw, 360px); aspect-ratio: 1 / 1; border-radius: 50%; display: grid; place-items: center; isolation: isolate; }
     .timer-ring::before {
       content: ""; position: absolute; inset: 0; border-radius: inherit;
       background: conic-gradient(var(--accent) 0 calc(var(--p)*1%), var(--ring-track) 0 100%);
@@ -151,20 +123,13 @@
               mask: radial-gradient(farthest-side, transparent calc(100% - var(--ring-w)), #000 0);
       filter: drop-shadow(0 8px 30px var(--glow));
     }
-    .timer-core {
-      width: calc(100% - var(--ring-w) * 2);
-      height: calc(100% - var(--ring-w) * 2);
-      border-radius: inherit;
-      background: radial-gradient(120% 120% at 20% 10%, rgba(255,255,255,0.45), transparent 40%), rgba(255,255,255,0.18);
-      border: 1px solid var(--border);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 10px 40px rgba(0,0,0,0.15);
-      display: grid; place-items: center; backdrop-filter: blur(6px); position: relative; overflow: hidden;
-    }
-    body[data-theme="warrior"] .timer-core {
-      background: radial-gradient(120% 120% at 20% 10%, rgba(255,255,255,0.12), transparent 40%), rgba(28,28,34,0.45);
-    }
+    .timer-core { width: calc(100% - var(--ring-w) * 2); height: calc(100% - var(--ring-w) * 2);
+      border-radius: inherit; background: radial-gradient(120% 120% at 20% 10%, rgba(255,255,255,0.45), transparent 40%), rgba(255,255,255,0.18);
+      border: 1px solid var(--border); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 10px 40px rgba(0,0,0,0.15); display: grid; place-items: center; backdrop-filter: blur(6px); position: relative; overflow: hidden; }
+    body[data-theme="warrior"] .timer-core { background: radial-gradient(120% 120% at 20% 10%, rgba(255,255,255,0.12), transparent 40%), rgba(28,28,34,0.45); }
     .time-display { font-size: clamp(36px, 13vw, 74px); line-height: 1; letter-spacing: 1px; font-weight: 800; color: var(--text); text-shadow: 0 2px 18px rgba(0,0,0,0.20); }
 
+    /* Pips */
     .pips { display: flex; gap: 8px; justify-content: center; margin-top: 14px; }
     .pip { width: 14px; height: 14px; border-radius: 6px; background: rgba(0,0,0,0.08); border: 1px solid var(--border); }
     body[data-theme="beautiful"] .pip.completed { background: linear-gradient(180deg, #ff8ac9, #ff3c91); }
@@ -174,27 +139,21 @@
     .controls { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 16px; }
     button.btn {
       appearance: none; border: 0; border-radius: 12px; padding: 12px 14px; font-weight: 700; font-size: 14px; cursor: pointer;
-      color: var(--btn-text);
-      background: linear-gradient(180deg, var(--btn-bg), var(--btn-bg-2));
-      box-shadow: 0 10px 20px -6px var(--glow);
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      transition: transform 120ms ease, filter 160ms ease, opacity 160ms ease;
-      min-height: 44px;
+      color: var(--btn-text); background: linear-gradient(180deg, var(--btn-bg), var(--btn-bg-2)); box-shadow: 0 10px 20px -6px var(--glow);
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: transform 120ms ease, filter 160ms ease, opacity 160ms ease; min-height: 44px;
     }
     button.btn:disabled { opacity: 0.6; cursor: not-allowed; }
     button.btn:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.04); }
     .btn.secondary { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border); box-shadow: none; }
 
-    /* Gear flotante en el reloj (solo móvil) */
+    /* FAB de ajustes: esquina superior derecha del marco */
     #settings-fab {
-      display: none;
-      place-items: center;
-      width: 44px; height: 44px; border-radius: 50%;
+      display: none; place-items: center; width: 44px; height: 44px; border-radius: 50%;
       border: 1px solid var(--border); background: var(--surface); color: var(--text);
-      box-shadow: var(--shadow-elev); position: absolute; top: 8px; left: 8px;
+      box-shadow: var(--shadow-elev); position: absolute; top: 6px; right: 6px;
     }
 
-    /* Modal genérico */
+    /* Modales */
     .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.50); display: grid; place-items: center; visibility: hidden; opacity: 0; transition: opacity 220ms ease, visibility 220ms ease; z-index: 10; padding: 18px; backdrop-filter: blur(2px); }
     .modal.active { visibility: visible; opacity: 1; }
     .modal-card { width: min(560px, 96vw); background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 16px; box-shadow: var(--shadow-elev); }
@@ -205,74 +164,46 @@
     @media (max-width: 560px) { .grid.two { grid-template-columns: 1fr; } }
     label.small { font-size: 12px; color: var(--muted); }
     input[type="number"], input[type="text"], select, input[type="range"] {
-      width: 100%; border-radius: 12px; border: 1px solid var(--border);
-      background: rgba(255,255,255,0.5); padding: 10px 12px; font-size: 15px; color: var(--text); outline: none;
+      width: 100%; border-radius: 12px; border: 1px solid var(--border); background: rgba(255,255,255,0.5);
+      padding: 10px 12px; font-size: 15px; color: var(--text); outline: none;
     }
-    body[data-theme="warrior"] input[type="number"], body[data-theme="warrior"] input[type="text"],
-    body[data-theme="warrior"] select, body[data-theme="warrior"] input[type="range"] { background: rgba(0,0,0,0.25); color: #f3f3f3; }
+    body[data-theme="warrior"] input[type="number"], body[data-theme="warrior"] input[type="text"], body[data-theme="warrior"] select, body[data-theme="warrior"] input[type="range"] { background: rgba(0,0,0,0.25); color: #f3f3f3; }
 
-    /* Cat hero */
-    .cat-hero {
-      width: clamp(44px, 9vw, 74px); height: clamp(44px, 9vw, 74px);
-      display: grid; place-items: center; border-radius: 14px; background: var(--surface); border: 1px solid var(--border);
-      box-shadow: var(--shadow-elev); backdrop-filter: blur(6px); overflow: hidden;
-    }
+    /* Gato */
+    .cat-hero { width: clamp(44px, 9vw, 74px); height: clamp(44px, 9vw, 74px); display: grid; place-items: center; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-elev); backdrop-filter: blur(6px); overflow: hidden; }
     .cat-hero svg { width: 100%; height: 100%; transform: translateY(1px); animation: bob 3s ease-in-out infinite; }
     @keyframes bob { 0%, 100% { transform: translateY(1px); } 50% { transform: translateY(-2px); } }
-    .cat-hero [data-variant="beautiful"] { display: none; }
-    .cat-hero [data-variant="warrior"] { display: none; }
-    body[data-theme="beautiful"] .cat-hero [data-variant="beautiful"] { display: block; }
-    body[data-theme="warrior"] .cat-hero [data-variant="warrior"] { display: block; }
+    .cat-hero [data-variant="beautiful"] { display: none; } .cat-hero [data-variant="warrior"] { display: none; }
+    body[data-theme="beautiful"] .cat-hero [data-variant="beautiful"] { display: block; } body[data-theme="warrior"] .cat-hero [data-variant="warrior"] { display: block; }
 
-    .pulse { animation: pulse 900ms ease-in-out infinite alternate; }
-    @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.04); } }
-
-    .toast {
-      position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%) translateY(20px);
-      background: var(--surface); border: 1px solid var(--border); padding: 8px 12px; border-radius: 999px; box-shadow: var(--shadow-elev);
-      opacity: 0; visibility: hidden; transition: 200ms ease; z-index: 15;
-    }
+    .toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--surface); border: 1px solid var(--border); padding: 8px 12px; border-radius: 999px; box-shadow: var(--shadow-elev); opacity: 0; visibility: hidden; transition: 200ms ease; z-index: 15; }
     .toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
-    /* CTA Reglas del juego */
-    .glow-cta {
-      position: relative; display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 14px; border-radius: 999px; color: var(--text); font-weight: 700;
-      background: var(--surface); border: 1px solid var(--border);
-      box-shadow: 0 0 0 2px rgba(255,255,255,0.04), 0 6px 20px -8px var(--glow);
-      overflow: hidden;
-    }
-    .glow-cta::before {
-      content: ""; position: absolute; inset: -2px; border-radius: inherit;
-      background: conic-gradient(from 0deg, var(--accent), transparent 30%, transparent 70%, var(--accent-2));
-      filter: blur(10px); opacity: .35; z-index: -1; animation: spin 6s linear infinite;
-    }
+    /* CTA Reglas */
+    .cta-row { margin-top: 10px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+    .glow-cta { position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 999px; color: var(--text); font-weight: 700; background: var(--surface); border: 1px solid var(--border); box-shadow: 0 0 0 2px rgba(255,255,255,0.04), 0 6px 20px -8px var(--glow); overflow: hidden; }
+    .glow-cta::before { content: ""; position: absolute; inset: -2px; border-radius: inherit; background: conic-gradient(from 0deg, var(--accent), transparent 30%, transparent 70%, var(--accent-2)); filter: blur(10px); opacity: .35; z-index: -1; animation: spin 6s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Móvil: ajustes pedidos */
+    /* Móvil */
     @media (max-width: 640px) {
       .brand { align-items: flex-start; }
-      .brand h1 { font-size: clamp(18px, 6vw, 22px); } /* BW más pequeño */
-      .product-badge { display: none; }               /* oculta la pastilla pequeña */
-      .product-badge.product-mobile {                 /* POMODORO grande centrado */
-        display: inline-block; font-size: 30px; padding: 6px 16px; margin: 8px auto 0;
-        background: linear-gradient(180deg, var(--btn-bg), var(--btn-bg-2)); color: #fff; box-shadow: 0 8px 18px -6px var(--glow);
-      }
-      .brand > div { text-align: left; }
-      .right-controls {
-        position: absolute; top: 6px; right: 10px; flex-direction: column; align-items: flex-end; gap: 6px;
-      }
-      .theme-btn { width: 44px; height: 44px; padding: 0; justify-content: center; border-radius: 50%; }
-      #theme-label { display: none; } /* icon-only */
-      .chip { padding: 6px 10px; }
+      .brand h1 { font-size: clamp(18px, 6vw, 22px); }
+      .product-badge { display: none; }
+      .product-badge.product-mobile { display: inline-block; font-size: 30px; padding: 6px 16px; margin: 8px auto 0; background: linear-gradient(180deg, var(--btn-bg), var(--btn-bg-2)); color: #fff; box-shadow: 0 8px 18px -6px var(--glow); }
+
+      .right-controls { position: absolute; top: 6px; right: 10px; flex-direction: column; align-items: flex-end; gap: 6px; }
+      .right-actions-row { gap: 6px; }
+      .theme-btn, .install-btn { width: 44px; height: 44px; padding: 0; justify-content: center; border-radius: 50%; }
+      #theme-label, #install-label { display: none; }
 
       .mode-line { grid-template-columns: 1fr; justify-items: center; }
       .mode-title, .mode-sub { text-align: center; }
 
-      /* botonería del timer: solo iconos */
       .btn .btn-label { display: none; }
-      #settings-btn { display: none; } /* ocultar botón de ajustes de cabecera */
-      #settings-fab { display: grid; } /* mostrar gear flotante en el reloj */
+      #settings-btn { display: none; }
+      #settings-fab { display: grid; }
     }
 
     footer { padding: 12px 0 20px; text-align: center; color: var(--muted); font-size: 13px; }
@@ -282,15 +213,14 @@
 <body data-theme="beautiful">
   <div class="bg-decor" aria-hidden="true" id="decor"></div>
 
-  <header class="app">
+  <header class="app intro">
     <div class="container app-bar">
       <div class="brand">
         <!-- Gato -->
         <div class="cat-hero" title="Beautiful Warrior" id="catHero">
           <!-- Beautiful -->
           <svg viewBox="0 0 100 100" data-variant="beautiful" aria-hidden="true">
-            <defs><linearGradient id="bandanaPink" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#ff8ac9"/><stop offset="100%" stop-color="#ff3c91"/></linearGradient></defs>
+            <defs><linearGradient id="bandanaPink" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ff8ac9"/><stop offset="100%" stop-color="#ff3c91"/></linearGradient></defs>
             <circle cx="50" cy="54" r="30" fill="#fff" stroke="#ffb3d5" stroke-width="2"/>
             <path d="M30,36 L22,20 L36,28 Z" fill="#fff" stroke="#ffb3d5" />
             <path d="M70,36 L78,20 L64,28 Z" fill="#fff" stroke="#ffb3d5" />
@@ -306,8 +236,7 @@
           </svg>
           <!-- Warrior -->
           <svg viewBox="0 0 100 100" data-variant="warrior" aria-hidden="true">
-            <defs><linearGradient id="bandanaRed" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#ff6b6b"/><stop offset="100%" stop-color="#ff2438"/></linearGradient></defs>
+            <defs><linearGradient id="bandanaRed" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ff6b6b"/><stop offset="100%" stop-color="#ff2438"/></linearGradient></defs>
             <circle cx="50" cy="54" r="30" fill="#0e0e12" stroke="#5c1117" stroke-width="2"/>
             <path d="M30,36 L22,20 L36,28 Z" fill="#0e0e12" stroke="#5c1117" />
             <path d="M70,36 L78,20 L64,28 Z" fill="#0e0e12" stroke="#5c1117" />
@@ -329,17 +258,22 @@
             <div class="product-badge" aria-label="Producto">POMODORO</div>
           </div>
           <div class="sub">para artistas que luchan bonito ✨</div>
-          <!-- POMODORO grande y centrado en móvil -->
-          <div class="product-badge product-mobile" aria-hidden="false">POMODORO</div>
+          <div class="product-badge product-mobile">POMODORO</div>
         </div>
       </div>
 
-      <!-- Esquina superior derecha (móvil: columna) -->
+      <!-- Acciones arriba a la derecha -->
       <div class="right-controls">
-        <button class="theme-btn" id="theme-btn" aria-label="Cambiar tema">
-          <i class="fa-solid fa-wand-magic-sparkles"></i>
-          <span id="theme-label">Beautiful</span>
-        </button>
+        <div class="right-actions-row">
+          <button class="theme-btn" id="theme-btn" aria-label="Cambiar tema">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span id="theme-label">Beautiful</span>
+          </button>
+          <button class="install-btn" id="install-btn" aria-label="Instalar app" style="display:none;">
+            <i class="fa-solid fa-download"></i>
+            <span id="install-label">Instalar</span>
+          </button>
+        </div>
         <div class="chip" title="Puntos">
           <span>🏆</span>
           <strong id="contador-puntos">0</strong>
@@ -348,22 +282,19 @@
     </div>
   </header>
 
-  <main class="container">
+  <main class="container intro-delayed">
     <section class="card">
       <div class="mode-line">
         <div>
           <h2 class="mode-title" id="timer-mode">¡HORA DE TRABAJAR!</h2>
           <div class="mode-sub" id="timer-instruction">Enfócate en una sola tarea. ¡Tú puedes!</div>
         </div>
-        <button class="theme-btn" id="settings-btn" aria-haspopup="dialog">
-          <i class="fa-solid fa-gear"></i>
-          <span class="btn-label">Ajustes</span>
-        </button>
+        <button class="theme-btn" id="settings-btn" aria-haspopup="dialog"><i class="fa-solid fa-gear"></i><span class="btn-label">Ajustes</span></button>
       </div>
 
       <div class="ring-wrap">
-        <div class="timer-ring" id="timer-ring" style="--p: 0;">
-          <!-- Gear flotante solo móvil -->
+        <div class="timer-ring" id="timer-ring" style="--p:0;">
+          <!-- Engranaje móvil pegado a la esquina del marco (arriba dcha) -->
           <button id="settings-fab" aria-label="Ajustes"><i class="fa-solid fa-gear"></i></button>
           <div class="timer-core">
             <div class="time-display" id="time-text">25:00</div>
@@ -384,15 +315,13 @@
   </main>
 
   <footer>
-    © 2025 Beautiful Warrior · Little Bug Games · Productividad con estilo · Made with <span style="color:#ff3c91;">❤</span>
-    <div style="margin-top:10px;">
-      <button id="reglas-btn" class="glow-cta">
-        <i class="fa-solid fa-book"></i> Reglas del juego
-      </button>
+    <div class="cta-row">
+      <button id="reglas-btn" class="glow-cta"><i class="fa-solid fa-book"></i> Reglas del juego</button>
     </div>
+    Productividad con estilo<br>Made with <span style="color:#ff3c91;">❤</span><br>© 2025 Little Bug Games<br>
   </footer>
 
-  <!-- Modales -->
+  <!-- Modales (antes del script para evitar nulls en listeners) -->
   <!-- Ajustes -->
   <div id="modal-config" class="modal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
     <div class="modal-card">
@@ -410,7 +339,6 @@
           <label class="small" for="long-break-time">Descanso largo (min)</label>
           <input type="number" id="long-break-time" min="5" max="60" value="10">
         </div>
-
         <div>
           <label class="small" for="auto-start">Autoiniciar siguiente fase</label>
           <select id="auto-start">
@@ -418,7 +346,6 @@
             <option value="on">Sí (automático)</option>
           </select>
         </div>
-
         <div>
           <label class="small" for="sound-select">Sonido de aviso</label>
           <select id="sound-select">
@@ -448,8 +375,8 @@
         <div>1) Trabaja enfocado durante el tiempo de trabajo.</div>
         <div>2) Descanso corto tras cada pomodoro.</div>
         <div>3) Cada 4 pomodoros: descanso largo.</div>
-        <div>4) Completa los desafíos de descanso para sumar puntos.</div>
-        <div>5) Mímate: posturas, respiración, agua. 🫶</div>
+        <div>4) Desafíos y minijuegos opcionales en los descansos.</div>
+        <div>5) Mímate: postura, respiración, agua. 🫶</div>
       </div>
       <div class="modal-actions">
         <button id="cerrar-reglas" class="btn"><i class="fa-solid fa-check"></i> <span class="btn-label">Entendido</span></button>
@@ -470,13 +397,43 @@
     </div>
   </div>
 
-  <!-- Desafío -->
+  <!-- Premio de circuito completo (medalla + chiste) -->
+  <div id="modal-premio" class="modal" role="dialog" aria-modal="true" aria-labelledby="reward-title">
+    <div class="modal-card" style="text-align:center;">
+      <h3 id="reward-title"><i class="fa-solid fa-award"></i> ¡Circuito completo!</h3>
+      <div style="font-size:18px; margin: 8px 0; font-weight:700;" id="premio-titulo">Medalla Beautiful Warrior</div>
+      <div id="premio-descripcion" style="margin:8px 0 10px;">+30 puntos y una pegatina exclusiva</div>
+      <div id="premio-sticker" style="font-size:40px;">🐱✨</div>
+      <div id="premio-chiste" style="margin-top:10px; color:var(--muted); font-size:14px;"></div>
+      <div class="modal-actions" style="justify-content:center;">
+        <button id="cerrar-premio" class="btn"><i class="fa-solid fa-check"></i> <span class="btn-label">Genial</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Descanso: Consejo + Minijuegos -->
   <div id="modal-desafio" class="modal" role="dialog" aria-modal="true" aria-labelledby="challenge-title">
     <div class="modal-card" style="text-align:center;">
-      <h3 id="challenge-title"><i class="fa-solid fa-fire-alt"></i> ¡Desafío de descanso!</h3>
-      <div style="font-size:18px; margin: 8px 0 14px;" id="modal-desafio-text">¡Toma un vaso de agua! 💧</div>
+      <h3 id="challenge-title"><i class="fa-solid fa-fire-alt"></i> Descanso</h3>
+      <div id="modal-desafio-text" style="font-size:16px; margin: 6px 0 14px;">¡Toma un vaso de agua! 💧</div>
+      <div class="modal-actions" style="justify-content:center; flex-wrap:wrap;">
+        <button id="btn-minijuego" class="btn secondary"><i class="fa-solid fa-gamepad"></i> <span class="btn-label">Minijuego</span></button>
+        <button id="modal-desafio-complete-btn" class="btn"><i class="fa-solid fa-check"></i> <span class="btn-label">Hecho (+5)</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Minijuegos -->
+  <div id="modal-minijuego" class="modal" role="dialog" aria-modal="true" aria-labelledby="mini-title">
+    <div class="modal-card" style="text-align:center;">
+      <h3 id="mini-title"><i class="fa-solid fa-gamepad"></i> Minijuego</h3>
+      <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:10px;">
+        <button id="mini-pop" class="theme-btn"><i class="fa-regular fa-circle"></i> <span class="btn-label">Burbujas</span></button>
+        <button id="mini-breathe" class="theme-btn"><i class="fa-solid fa-dharmachakra"></i> <span class="btn-label">Respira</span></button>
+      </div>
+      <div id="mini-area" style="position:relative; width:min(92vw, 480px); height:300px; margin:0 auto; border-radius:16px; border:1px solid var(--border); background: rgba(0,0,0,0.04); overflow:hidden;"></div>
       <div class="modal-actions" style="justify-content:center;">
-        <button id="modal-desafio-complete-btn" class="btn"><i class="fa-solid fa-check"></i> <span class="btn-label">Completar desafío (+5)</span></button>
+        <button id="cerrar-minijuego" class="btn"><i class="fa-solid fa-circle-stop"></i> <span class="btn-label">Cerrar</span></button>
       </div>
     </div>
   </div>
@@ -484,10 +441,11 @@
   <div class="toast" id="toast">+5 puntos</div>
 
   <script>
-    // ========= Elementos =========
+    // ====== Elementos ======
     const themeBtn = document.getElementById('theme-btn');
     const themeLabel = document.getElementById('theme-label');
     const metaThemeColor = document.getElementById('meta-theme-color');
+    const installBtn = document.getElementById('install-btn');
     const decor = document.getElementById('decor');
 
     const timerMode = document.getElementById('timer-mode');
@@ -514,7 +472,6 @@
 
     const modalReglas = document.getElementById('modal-reglas');
     const cerrarReglas = document.getElementById('cerrar-reglas');
-    const reglasBtn = document.getElementById('reglas-btn');
 
     const modalLogro = document.getElementById('modal-logro');
     const cerrarLogro = document.getElementById('cerrar-logro');
@@ -524,13 +481,28 @@
     const modalDesafio = document.getElementById('modal-desafio');
     const modalDesafioText = document.getElementById('modal-desafio-text');
     const modalDesafioCompleteBtn = document.getElementById('modal-desafio-complete-btn');
+    const btnMinijuego = document.getElementById('btn-minijuego');
+
+    const modalMini = document.getElementById('modal-minijuego');
+    const miniArea = document.getElementById('mini-area');
+    const miniPopBtn = document.getElementById('mini-pop');
+    const miniBreatheBtn = document.getElementById('mini-breathe');
+    const cerrarMiniBtn = document.getElementById('cerrar-minijuego');
+
+    const modalPremio = document.getElementById('modal-premio');
+    const cerrarPremio = document.getElementById('cerrar-premio');
+    const premioTitulo = document.getElementById('premio-titulo');
+    const premioDescripcion = document.getElementById('premio-descripcion');
+    const premioSticker = document.getElementById('premio-sticker');
+    const premioChiste = document.getElementById('premio-chiste');
 
     const puntosElement = document.getElementById('contador-puntos');
     const pips = document.querySelectorAll('.pip');
     const toast = document.getElementById('toast');
     const catHero = document.getElementById('catHero');
+    const reglasBtn = document.getElementById('reglas-btn');
 
-    // ========= Estado =========
+    // ====== Estado ======
     let timer = null;
     let isRunning = false;
     let isPaused = false;
@@ -542,10 +514,13 @@
     let audioContext;
     let lastTick = null;
 
-    let autoStart = false;       // autoinicio
+    let autoStart = false;
     let soundType = 'beep';
     let volume = 0.5;
 
+    let deferredPrompt = null;
+
+    // Datos
     const challenges = [
       "¡Haz 5 respiraciones profundas! 🌬️",
       "¡Toma un vaso de agua! 💧",
@@ -556,154 +531,125 @@
       "¡Sacude los brazos 10s! 💪",
       "¡Cierra los ojos y sonríe 10s! 😊"
     ];
+    const chistes = [
+      "¿Por qué el programador se quedó sin dinero? Porque usó todo su caché.",
+      "Hay 10 tipos de personas: las que entienden binario y las que no.",
+      "—¿Me ayudas con CSS? —Depende... —¿De qué? —Exacto.",
+      "¿Qué hace un dev cuando tiene frío? Se pone un suéter... y luego otro: hotfix.",
+      "Java y JavaScript se parecen como carro y caracol.",
+      "—Doctor, veo píxeles. —Es su retina.",
+      "Mi código sí funciona... en mi máquina."
+    ];
+    const stickers = ["🐱💖", "🐱⚔️", "🐾✨", "🎨🐱", "🛡️🐱", "🌸🐱", "🔥🐱"];
 
     const allAchievements = [
       { id: 'first-pomodoro', title: '¡Primer Pomodoro!', description: 'Completaste tu primera sesión de trabajo', points: 10, earned: false },
       { id: 'five-pomodoros', title: 'Máquina de Productividad', description: 'Completaste 5 Pomodoros', points: 25, earned: false }
     ];
 
-    // ========= Utilidades =========
-    function formatTime(s) { const m = Math.floor(s / 60).toString().padStart(2, '0'); const sec = Math.floor(s % 60).toString().padStart(2, '0'); return `${m}:${sec}`; }
-    function setDocTitle() { document.title = `${formatTime(timeLeft)} · Beautiful Warrior`; }
-    function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 1400); }
-    function vibrate(pattern = [50, 30, 50]) { if (navigator.vibrate) navigator.vibrate(pattern); }
+    // ====== Util ======
+    function formatTime(s){ const m=Math.floor(s/60).toString().padStart(2,'0'); const sec=Math.floor(s%60).toString().padStart(2,'0'); return `${m}:${sec}`; }
+    function setDocTitle(){ document.title=`${formatTime(timeLeft)} · Beautiful Warrior`; }
+    function showToast(msg){ toast.textContent=msg; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),1400); }
+    function vibrate(p=[50,30,50]){ if(navigator.vibrate) navigator.vibrate(p); }
 
-    function spawnDecor() {
-      decor.innerHTML = '';
-      const isBeautiful = document.body.getAttribute('data-theme') === 'beautiful';
-      const n = isBeautiful ? 14 : 18;
-      for (let i = 0; i < n; i++) {
-        const s = document.createElement('span');
-        s.style.left = (Math.random() * 100) + '%';
-        s.style.setProperty('--dur', (12 + Math.random() * 16) + 's');
-        s.style.setProperty('--s', (0.6 + Math.random() * 1.2).toFixed(2));
-        s.style.animationDelay = (-Math.random() * 10) + 's';
-        decor.appendChild(s);
-      }
+    function spawnDecor(){
+      decor.innerHTML=''; const isBeautiful=document.body.getAttribute('data-theme')==='beautiful'; const n=isBeautiful?14:18;
+      for(let i=0;i<n;i++){ const s=document.createElement('span'); s.style.left=(Math.random()*100)+'%'; s.style.setProperty('--dur',(12+Math.random()*16)+'s'); s.style.setProperty('--s',(0.6+Math.random()*1.2).toFixed(2)); s.style.animationDelay=(-Math.random()*10)+'s'; decor.appendChild(s); }
     }
 
-    function setTheme(theme) {
-      document.body.setAttribute('data-theme', theme);
-      themeLabel.textContent = theme === 'beautiful' ? 'Beautiful' : 'Warrior';
-      metaThemeColor.setAttribute('content', theme === 'beautiful' ? '#ffebf4' : '#0f0f12');
-    }
-    function toggleTheme() { const next = document.body.getAttribute('data-theme') === 'beautiful' ? 'warrior' : 'beautiful'; setTheme(next); saveState(); spawnDecor(); }
+    function setTheme(theme){ document.body.setAttribute('data-theme',theme); themeLabel.textContent=theme==='beautiful'?'Beautiful':'Warrior'; metaThemeColor.setAttribute('content', theme==='beautiful' ? '#ffebf4' : '#0f0f12'); }
+    function toggleTheme(){ const next=document.body.getAttribute('data-theme')==='beautiful'?'warrior':'beautiful'; setTheme(next); saveState(); spawnDecor(); }
     themeBtn.addEventListener('click', toggleTheme);
 
-    // ========= Sonidos =========
-    function ensureAC() {
-      try { if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)(); if (audioContext.state === 'suspended') audioContext.resume(); } catch(_) {}
+    // Sonidos
+    function ensureAC(){ try{ if(!audioContext) audioContext=new (window.AudioContext||window.webkitAudioContext)(); if(audioContext.state==='suspended') audioContext.resume(); }catch(_){} }
+    function tone(freq=880,dur=0.3,type='square',vol=volume){ ensureAC(); if(!audioContext) return; const t0=audioContext.currentTime; const o=audioContext.createOscillator(); const g=audioContext.createGain(); o.type=type; o.frequency.setValueAtTime(freq,t0); g.gain.setValueAtTime(0.0001,t0); g.gain.exponentialRampToValueAtTime(Math.max(0.0002,vol), t0+0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0+dur); o.connect(g); g.connect(audioContext.destination); o.start(t0); o.stop(t0+dur+0.02); }
+    function playAlarm(){
+      if(soundType==='none'){ vibrate([70,60,70]); return; }
+      if(soundType==='beep'){ tone(880,0.35,'square'); setTimeout(()=>tone(660,0.25,'square'),180); }
+      else if(soundType==='bell'){ tone(1568,0.5,'sine'); setTimeout(()=>tone(1174,0.45,'sine',volume*0.8),120); }
+      else if(soundType==='arp'){ tone(660,0.18,'triangle'); setTimeout(()=>tone(880,0.18,'triangle'),120); setTimeout(()=>tone(1320,0.22,'triangle'),240); }
+      vibrate([70,60,70]);
     }
-    function tone(freq=880, dur=0.3, type='square', vol=volume) {
-      ensureAC(); if (!audioContext) return;
-      const t0 = audioContext.currentTime;
-      const o = audioContext.createOscillator();
-      const g = audioContext.createGain();
-      o.type = type; o.frequency.setValueAtTime(freq, t0);
-      g.gain.setValueAtTime(0.0001, t0);
-      g.gain.exponentialRampToValueAtTime(Math.max(0.0002, vol), t0 + 0.02);
-      g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-      o.connect(g); g.connect(audioContext.destination);
-      o.start(t0); o.stop(t0 + dur + 0.02);
-    }
-    function playAlarm() {
-      if (soundType === 'none') { vibrate([70, 60, 70]); return; }
-      if (soundType === 'beep') {
-        tone(880, 0.35, 'square'); setTimeout(() => tone(660, 0.25, 'square'), 180);
-      } else if (soundType === 'bell') {
-        tone(1568, 0.5, 'sine'); setTimeout(() => tone(1174, 0.45, 'sine', volume * 0.8), 120);
-      } else if (soundType === 'arp') {
-        tone(660, 0.18, 'triangle'); setTimeout(() => tone(880, 0.18, 'triangle'), 120); setTimeout(() => tone(1320, 0.22, 'triangle'), 240);
-      }
-      vibrate([70, 60, 70]);
+    testSoundBtn.addEventListener('click', (e)=>{ e.preventDefault(); playAlarm(); });
+
+    // Timer
+    function updateRing(){ const progress=((totalTime-timeLeft)/totalTime)*100; timerRing.style.setProperty('--p', progress.toFixed(2)); if(isRunning && timeLeft<=10) timerRing.classList.add('pulse'); else timerRing.classList.remove('pulse'); }
+    function updatePips(){ const c=pomodoroCount%4; pips.forEach((p,i)=>p.classList.toggle('completed', i<c)); }
+
+    function setupMode(mode){
+      currentMode=mode;
+      if(mode==='work'){ totalTime=parseInt(workTimeInput.value,10)*60; timerMode.textContent='¡HORA DE TRABAJAR!'; timerInstruction.textContent='Enfócate en una sola tarea. ¡Tú puedes!'; }
+      else if(mode==='break'){ totalTime=parseInt(breakTimeInput.value,10)*60; timerMode.textContent='¡DESCANSO CORTO!'; timerInstruction.textContent='Muévete un poco y recarga energía.'; showBreakOverlay(); }
+      else { totalTime=parseInt(longBreakTimeInput.value,10)*60; timerMode.textContent='¡DESCANSO LARGO!'; timerInstruction.textContent='Tómate un respiro más profundo. Te lo ganaste.'; showBreakOverlay(); }
+      timeLeft=totalTime; timeText.textContent=formatTime(timeLeft); updateRing(); setDocTitle();
     }
 
-    testSoundBtn.addEventListener('click', (e) => { e.preventDefault(); playAlarm(); });
-
-    // ========= Timer =========
-    function updateRing() {
-      const progress = ((totalTime - timeLeft) / totalTime) * 100;
-      timerRing.style.setProperty('--p', progress.toFixed(2));
-      if (isRunning && timeLeft <= 10) timerRing.classList.add('pulse'); else timerRing.classList.remove('pulse');
-    }
-    function updatePips() { const c = pomodoroCount % 4; pips.forEach((p, i) => { p.classList.toggle('completed', i < c); }); }
-
-    function setupMode(mode) {
-      currentMode = mode;
-      if (mode === 'work') {
-        totalTime = parseInt(workTimeInput.value, 10) * 60;
-        timerMode.textContent = '¡HORA DE TRABAJAR!';
-        timerInstruction.textContent = 'Enfócate en una sola tarea. ¡Tú puedes!';
-      } else if (mode === 'break') {
-        totalTime = parseInt(breakTimeInput.value, 10) * 60;
-        timerMode.textContent = '¡DESCANSO CORTO!';
-        timerInstruction.textContent = 'Muévete un poco y recarga energía.';
-        showRandomChallenge();
-      } else {
-        totalTime = parseInt(longBreakTimeInput.value, 10) * 60;
-        timerMode.textContent = '¡DESCANSO LARGO!';
-        timerInstruction.textContent = 'Tómate un respiro más profundo. Te lo ganaste.';
-        showRandomChallenge();
-      }
-      timeLeft = totalTime; timeText.textContent = formatTime(timeLeft); updateRing(); setDocTitle();
+    function tick(){
+      if(!isRunning) return;
+      const now=Date.now();
+      if(lastTick){ const delta=Math.max(0, Math.round((now-lastTick)/1000)); if(delta>0){ timeLeft-=1; lastTick=now; } }
+      else { timeLeft-=1; lastTick=now; }
+      if(timeLeft<=0){ clearInterval(timer); isRunning=false; startBtn.disabled=false; pauseBtn.disabled=true; playAlarm(); handleTimerEnd(); }
+      timeText.textContent=formatTime(Math.max(0,timeLeft)); setDocTitle(); updateRing();
     }
 
-    function tick() {
-      if (!isRunning) return;
-      const now = Date.now();
-      if (lastTick) { const delta = Math.max(0, Math.round((now - lastTick) / 1000)); if (delta > 0) { timeLeft -= 1; lastTick = now; } }
-      else { timeLeft -= 1; lastTick = now; }
+    function startTimer(){ if(isRunning) return; isRunning=true; isPaused=false; startBtn.disabled=true; pauseBtn.disabled=false; lastTick=Date.now(); timer=setInterval(tick,1000); ensureAC(); }
+    function pauseTimer(){ if(!isRunning) return; clearInterval(timer); isRunning=false; isPaused=true; startBtn.disabled=false; pauseBtn.disabled=true; }
+    function skipTimer(){ clearInterval(timer); isRunning=false; isPaused=false; startBtn.disabled=false; pauseBtn.disabled=true; handleTimerEnd(); }
+    function resetTimer(){ clearInterval(timer); isRunning=false; isPaused=false; startBtn.disabled=false; pauseBtn.disabled=true; setupMode(currentMode); }
 
-      if (timeLeft <= 0) {
-        clearInterval(timer); isRunning = false; startBtn.disabled = false; pauseBtn.disabled = true; playAlarm(); handleTimerEnd();
-      }
-      timeText.textContent = formatTime(Math.max(0, timeLeft)); setDocTitle(); updateRing();
-    }
-
-    function startTimer() {
-      if (isRunning) return;
-      isRunning = true; isPaused = false; startBtn.disabled = true; pauseBtn.disabled = false; lastTick = Date.now();
-      timer = setInterval(tick, 1000);
-      try { ensureAC(); } catch (_) {}
-    }
-    function pauseTimer() { if (!isRunning) return; clearInterval(timer); isRunning = false; isPaused = true; startBtn.disabled = false; pauseBtn.disabled = true; }
-    function skipTimer() { clearInterval(timer); isRunning = false; isPaused = false; startBtn.disabled = false; pauseBtn.disabled = true; handleTimerEnd(); }
-    function resetTimer() { clearInterval(timer); isRunning = false; isPaused = false; startBtn.disabled = false; pauseBtn.disabled = true; setupMode(currentMode); }
-
-    function handleTimerEnd() {
-      if (currentMode === 'work') {
-        pomodoroCount++; puntos += 10; puntosElement.textContent = puntos; showToast('+10 puntos'); updatePips(); checkAchievements();
-        if (pomodoroCount % 4 === 0) setupMode('longBreak'); else setupMode('break');
+    function handleTimerEnd(){
+      if(currentMode==='work'){
+        pomodoroCount++; puntos+=10; puntosElement.textContent=puntos; showToast('+10 puntos'); updatePips(); checkAchievements();
+        if(pomodoroCount%4===0){ setupMode('longBreak'); showCircuitReward(); }
+        else { setupMode('break'); }
       } else {
         setupMode('work');
       }
       saveState();
-      if (autoStart) setTimeout(() => startTimer(), 450);
+      if(autoStart) setTimeout(()=>startTimer(), 500);
     }
 
-    // ========= Desafíos y logros =========
-    function showRandomChallenge() {
-      const i = Math.floor(Math.random() * challenges.length);
-      modalDesafioText.textContent = challenges[i];
+    // Descanso (consejo + minijuegos)
+    function showBreakOverlay(){
+      const i=Math.floor(Math.random()*challenges.length);
+      modalDesafioText.textContent=challenges[i];
       modalDesafio.classList.add('active');
     }
-    function completeChallenge() { puntos += 5; puntosElement.textContent = puntos; showToast('+5 puntos'); modalDesafio.classList.remove('active'); saveState(); }
-    modalDesafioCompleteBtn.addEventListener('click', completeChallenge);
+    function completeChallenge(){
+      puntos+=5; puntosElement.textContent=puntos; showToast('+5 puntos'); modalDesafio.classList.remove('active'); saveState();
+    }
+    // Registrar listeners de forma segura
+    if (modalDesafioCompleteBtn) modalDesafioCompleteBtn.addEventListener('click', completeChallenge);
+    if (btnMinijuego) btnMinijuego.addEventListener('click', ()=>{ modalDesafio.classList.remove('active'); openMinigameHub(); });
 
-    function showAchievement(a) { logroTitulo.textContent = a.title; logroDescripcion.textContent = a.description; modalLogro.classList.add('active'); }
-    function checkAchievements() {
-      allAchievements.forEach(a => {
-        if (!a.earned) {
-          let ok = false;
-          if (a.id === 'first-pomodoro' && pomodoroCount >= 1) ok = true;
-          if (a.id === 'five-pomodoros' && pomodoroCount >= 5) ok = true;
-          if (ok) { a.earned = true; puntos += a.points; puntosElement.textContent = puntos; showAchievement(a); }
+    // Logros
+    function showAchievement(a){ logroTitulo.textContent=a.title; logroDescripcion.textContent=a.description; modalLogro.classList.add('active'); }
+    function checkAchievements(){
+      allAchievements.forEach(a=>{
+        if(!a.earned){
+          let ok=false;
+          if(a.id==='first-pomodoro' && pomodoroCount>=1) ok=true;
+          if(a.id==='five-pomodoros' && pomodoroCount>=5) ok=true;
+          if(ok){ a.earned=true; puntos+=a.points; puntosElement.textContent=puntos; showAchievement(a); }
         }
       });
     }
 
-    // ========= Estado persistente =========
-    function saveState() {
+    // Premio de circuito (medalla + chiste + confeti)
+    function showCircuitReward(){
+      puntos+=30; puntosElement.textContent=puntos;
+      premioSticker.textContent = stickers[Math.floor(Math.random()*stickers.length)];
+      premioChiste.textContent = 'Chiste dev: ' + chistes[Math.floor(Math.random()*chistes.length)];
+      modalPremio.classList.add('active');
+      confettiBurst();
+      saveState();
+    }
+
+    // Persistencia
+    function saveState(){
       localStorage.setItem('BW_points', puntos);
       localStorage.setItem('BW_pomodoros', pomodoroCount);
       localStorage.setItem('BW_theme', document.body.getAttribute('data-theme'));
@@ -711,82 +657,140 @@
       localStorage.setItem('BW_break', breakTimeInput.value);
       localStorage.setItem('BW_longbreak', longBreakTimeInput.value);
       localStorage.setItem('BW_achievements', JSON.stringify(allAchievements));
-      localStorage.setItem('BW_autostart', autoStart ? 'on' : 'off');
+      localStorage.setItem('BW_autostart', autoStart ? 'on':'off');
       localStorage.setItem('BW_sound', soundType);
       localStorage.setItem('BW_volume', String(volume));
     }
-
-    function loadState() {
-      const t = localStorage.getItem('BW_theme'); if (t) setTheme(t);
-      const pts = localStorage.getItem('BW_points'); puntos = pts ? parseInt(pts, 10) : 0; puntosElement.textContent = puntos;
-      const pCount = localStorage.getItem('BW_pomodoros'); pomodoroCount = pCount ? parseInt(pCount, 10) : 0; updatePips();
-      const w = localStorage.getItem('BW_work'); if (w) workTimeInput.value = w;
-      const b = localStorage.getItem('BW_break'); if (b) breakTimeInput.value = b;
-      const lb = localStorage.getItem('BW_longbreak'); if (lb) longBreakTimeInput.value = lb;
-
-      autoStart = (localStorage.getItem('BW_autostart') || 'off') === 'on';
-      autoStartSelect.value = autoStart ? 'on' : 'off';
-
-      soundType = localStorage.getItem('BW_sound') || 'beep';
-      soundSelect.value = soundType;
-
-      volume = parseFloat(localStorage.getItem('BW_volume') || '0.5');
-      soundVol.value = volume;
-
-      try { const savedAch = JSON.parse(localStorage.getItem('BW_achievements') || '[]'); if (savedAch.length) { for (const a of allAchievements) { const f = savedAch.find(x => x.id === a.id); if (f) a.earned = !!f.earned; } } } catch (_) {}
+    function loadState(){
+      const t=localStorage.getItem('BW_theme'); if(t) setTheme(t);
+      const pts=localStorage.getItem('BW_points'); puntos=pts?parseInt(pts,10):0; puntosElement.textContent=puntos;
+      const pCount=localStorage.getItem('BW_pomodoros'); pomodoroCount=pCount?parseInt(pCount,10):0; updatePips();
+      const w=localStorage.getItem('BW_work'); if(w) workTimeInput.value=w;
+      const b=localStorage.getItem('BW_break'); if(b) breakTimeInput.value=b;
+      const lb=localStorage.getItem('BW_longbreak'); if(lb) longBreakTimeInput.value=lb;
+      autoStart=(localStorage.getItem('BW_autostart')||'off')==='on'; autoStartSelect.value=autoStart?'on':'off';
+      soundType=localStorage.getItem('BW_sound')||'beep'; soundSelect.value=soundType;
+      volume=parseFloat(localStorage.getItem('BW_volume')||'0.5'); soundVol.value=volume;
+      try{ const savedAch=JSON.parse(localStorage.getItem('BW_achievements')||'[]'); if(savedAch.length){ for(const a of allAchievements){ const f=savedAch.find(x=>x.id===a.id); if(f) a.earned=!!f.earned; } } }catch(_){}
     }
 
-    // ========= UI eventos =========
-    settingsBtn.addEventListener('click', () => modalConfig.classList.add('active'));
-    settingsFab.addEventListener('click', () => modalConfig.classList.add('active'));
-    cerrarConfig.addEventListener('click', () => { modalConfig.classList.remove('active'); if (!isRunning) setupMode(currentMode); saveState(); });
-
-    reglasBtn.addEventListener('click', () => modalReglas.classList.add('active'));
-    cerrarReglas.addEventListener('click', () => modalReglas.classList.remove('active'));
-    cerrarLogro.addEventListener('click', () => modalLogro.classList.remove('active'));
+    // UI
+    settingsBtn.addEventListener('click', ()=>modalConfig.classList.add('active'));
+    settingsFab.addEventListener('click', ()=>modalConfig.classList.add('active'));
+    cerrarConfig.addEventListener('click', ()=>{ modalConfig.classList.remove('active'); if(!isRunning) setupMode(currentMode); saveState(); });
+    reglasBtn.addEventListener('click', ()=>modalReglas.classList.add('active'));
+    cerrarReglas.addEventListener('click', ()=>modalReglas.classList.remove('active'));
+    cerrarLogro.addEventListener('click', ()=>modalLogro.classList.remove('active'));
+    cerrarPremio.addEventListener('click', ()=>modalPremio.classList.remove('active'));
 
     startBtn.addEventListener('click', startTimer);
     pauseBtn.addEventListener('click', pauseTimer);
     skipBtn.addEventListener('click', skipTimer);
     resetBtn.addEventListener('click', resetTimer);
 
-    workTimeInput.addEventListener('change', () => { if (!isRunning) setupMode('work'); saveState(); });
-    breakTimeInput.addEventListener('change', () => { if (!isRunning && currentMode !== 'work') setupMode(currentMode); saveState(); });
-    longBreakTimeInput.addEventListener('change', () => { if (!isRunning && currentMode === 'longBreak') setupMode('longBreak'); saveState(); });
+    workTimeInput.addEventListener('change', ()=>{ if(!isRunning) setupMode('work'); saveState(); });
+    breakTimeInput.addEventListener('change', ()=>{ if(!isRunning && currentMode!=='work') setupMode(currentMode); saveState(); });
+    longBreakTimeInput.addEventListener('change', ()=>{ if(!isRunning && currentMode==='longBreak') setupMode('longBreak'); saveState(); });
+    autoStartSelect.addEventListener('change', ()=>{ autoStart = autoStartSelect.value==='on'; saveState(); });
+    soundSelect.addEventListener('change', ()=>{ soundType = soundSelect.value; saveState(); });
+    soundVol.addEventListener('input', ()=>{ volume = parseFloat(soundVol.value); saveState(); });
 
-    autoStartSelect.addEventListener('change', () => { autoStart = autoStartSelect.value === 'on'; saveState(); });
-    soundSelect.addEventListener('change', () => { soundType = soundSelect.value; saveState(); });
-    soundVol.addEventListener('input', () => { volume = parseFloat(soundVol.value); saveState(); });
-
-    // Tamaño del gato en móvil: grande de verdad
-    function sizeCatToTitle() {
-      const h1 = document.querySelector('.brand h1');
-      if (!h1 || !catHero) return;
-      if (window.innerWidth <= 640) {
-        const fs = parseFloat(getComputedStyle(h1).fontSize);
-        const size = Math.min(fs * 2.2, 132); // bastante más grande que BW, tope 132px
-        catHero.style.width = size + 'px';
-        catHero.style.height = size + 'px';
-      } else {
-        catHero.style.width = '';
-        catHero.style.height = '';
-      }
+    // Tamaño del gato en móvil
+    function sizeCatToTitle(){
+      const h1=document.querySelector('.brand h1'); if(!h1||!catHero) return;
+      if(window.innerWidth<=640){ const fs=parseFloat(getComputedStyle(h1).fontSize); const size=Math.min(fs*2.2, 132); catHero.style.width=size+'px'; catHero.style.height=size+'px'; }
+      else { catHero.style.width=''; catHero.style.height=''; }
     }
     window.addEventListener('resize', sizeCatToTitle);
 
+    // PWA install
+    window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); deferredPrompt=e; installBtn.style.display='inline-flex'; });
+    installBtn.addEventListener('click', async ()=>{ if(!deferredPrompt) return; deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if(outcome==='accepted'){ showToast('¡App instalada!'); } deferredPrompt=null; installBtn.style.display='none'; });
+    window.addEventListener('appinstalled', ()=>{ showToast('¡App instalada!'); installBtn.style.display='none'; });
+
+    // Confeti
+    function confettiBurst(){
+      const end=Date.now()+600; const colors=['#ff3c91','#ff8ac9','#ffd1e6','#ff3a4a','#ff7a85','#fff'];
+      const interval=setInterval(function(){
+        if(Date.now()>end){ clearInterval(interval); return; }
+        for(let i=0;i<12;i++){
+          const c=document.createElement('div'); c.style.position='fixed'; c.style.zIndex='20';
+          c.style.width='8px'; c.style.height='14px'; c.style.background=colors[Math.floor(Math.random()*colors.length)];
+          c.style.left=Math.random()*100+'%'; c.style.top='-10px'; c.style.opacity='0.9'; c.style.transform='rotate('+(Math.random()*360)+'deg)';
+          c.style.transition='transform 700ms ease-out, top 700ms ease-out, opacity 700ms ease-out';
+          document.body.appendChild(c);
+          requestAnimationFrame(()=>{ c.style.top='110%'; c.style.transform+=' translateY(100vh)'; c.style.opacity='0'; });
+          setTimeout(()=>c.remove(),800);
+        }
+      }, 120);
+    }
+
+    // Minijuegos
+    let miniCleanup = ()=>{};
+    function openMinigameHub(){ modalMini.classList.add('active'); startMiniBreathe(); } // abre con Respira por defecto
+    function clearMiniArea(){ miniCleanup(); miniCleanup=()=>{}; miniArea.innerHTML=''; }
+
+    // Burbujas: tocar para explotar
+    function startMiniPop(){
+      clearMiniArea();
+      let score=0; let running=true;
+      const scoreEl=document.createElement('div'); scoreEl.style.position='absolute'; scoreEl.style.right='8px'; scoreEl.style.top='8px'; scoreEl.textContent='Pops: 0'; scoreEl.style.fontWeight='700';
+      miniArea.appendChild(scoreEl);
+      const spawn=()=> {
+        if(!running) return;
+        const b=document.createElement('div');
+        const sz=20+Math.random()*36;
+        b.style.width=sz+'px'; b.style.height=sz+'px'; b.style.borderRadius='50%';
+        b.style.position='absolute'; b.style.left=(Math.random()*(miniArea.clientWidth-sz))+'px'; b.style.top=(miniArea.clientHeight+20)+'px';
+        b.style.background='radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,0.4)), '+getComputedStyle(document.body).getPropertyValue('--accent');
+        b.style.opacity='0.9';
+        miniArea.appendChild(b);
+        const dur=1500+Math.random()*1200;
+        b.animate([{transform:'translateY(0)'},{transform:'translateY(-110%)'}],{duration:dur, easing:'ease-out'}).finished.then(()=> b.remove()).catch(()=>{});
+        b.addEventListener('pointerdown', ()=>{ score++; scoreEl.textContent='Pops: '+score; b.remove(); });
+        setTimeout(spawn, 300);
+      };
+      spawn();
+      miniCleanup=()=>{ running=false; };
+    }
+
+    // Respira: círculo que guía inhalar/exhalar
+    function startMiniBreathe(){
+      clearMiniArea();
+      const svgNS='http://www.w3.org/2000/svg';
+      const svg=document.createElementNS(svgNS,'svg'); svg.setAttribute('viewBox','0 0 200 200'); svg.style.width='100%'; svg.style.height='100%';
+      const circle=document.createElementNS(svgNS,'circle'); circle.setAttribute('cx','100'); circle.setAttribute('cy','100'); circle.setAttribute('r','40'); circle.setAttribute('fill','none'); circle.setAttribute('stroke','currentColor'); circle.setAttribute('stroke-width','6');
+      svg.appendChild(circle);
+      const txt=document.createElement('div'); txt.style.position='absolute'; txt.style.width='100%'; txt.style.top='calc(50% - 12px)'; txt.style.textAlign='center'; txt.style.fontWeight='700'; txt.textContent='Inhala';
+      miniArea.appendChild(svg); miniArea.appendChild(txt);
+      let t=0, id; const step=()=>{
+        t+=0.016; const s=(Math.sin(t)+1)/2; const r=35+ s*55; circle.setAttribute('r', r.toFixed(2));
+        txt.textContent = s>0.5 ? 'Inhala' : 'Exhala';
+        id=requestAnimationFrame(step);
+      }; id=requestAnimationFrame(step);
+      miniCleanup=()=>{ cancelAnimationFrame(id); };
+    }
+
+    miniPopBtn.addEventListener('click', startMiniPop);
+    miniBreatheBtn.addEventListener('click', startMiniBreathe);
+    cerrarMiniBtn.addEventListener('click', ()=>{ modalMini.classList.remove('active'); clearMiniArea(); });
+
     // Init
-    function init() {
+    function sizeCatToTitle(){
+      const h1=document.querySelector('.brand h1'); if(!h1||!catHero) return;
+      if(window.innerWidth<=640){ const fs=parseFloat(getComputedStyle(h1).fontSize); const size=Math.min(fs*2.2, 132); catHero.style.width=size+'px'; catHero.style.height=size+'px'; }
+      else { catHero.style.width=''; catHero.style.height=''; }
+    }
+
+    function init(){
       loadState(); setupMode('work'); spawnDecor(); setDocTitle(); sizeCatToTitle();
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(console.error); });
-      }
+      if('serviceWorker' in navigator){ window.addEventListener('load', ()=>{ navigator.serviceWorker.register('./sw.js').catch(console.error); }); }
     }
     document.addEventListener('DOMContentLoaded', init);
+    window.addEventListener('resize', sizeCatToTitle);
 
     // Cerrar modales tocando el fondo
-    [modalConfig, modalReglas, modalLogro, modalDesafio].forEach(m => {
-      m?.addEventListener('click', (e) => { if (e.target === m) m.classList.remove('active'); });
-    });
+    [modalConfig, modalReglas, modalLogro, modalPremio, modalMini, modalDesafio].forEach(m=>{ m?.addEventListener('click',(e)=>{ if(e.target===m) m.classList.remove('active'); }); });
   </script>
 </body>
 </html>
