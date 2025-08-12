@@ -1,4 +1,4 @@
-const CACHE = 'bw-pomodoro-v1';
+const CACHE = 'bw-pomodoro-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -6,13 +6,12 @@ const ASSETS = [
   './icons/cat-192.png',
   './icons/cat-512.png',
   './icons/cat-maskable-192.png',
-  './icons/cat-maskable-512.png'
+  './icons/cat-maskable-512.png',
+  './icons/apple-touch-icon-180.png'
 ];
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(ASSETS)).then(() => self.skipWaiting())
-  );
+  e.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(ASSETS)).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', (e) => {
