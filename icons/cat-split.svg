@@ -1,0 +1,53 @@
+<!-- icons/cat-split.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="pink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff8ac9"/><stop offset="100%" stop-color="#ff3c91"/>
+    </linearGradient>
+    <linearGradient id="red" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff7a85"/><stop offset="100%" stop-color="#ff3a4a"/>
+    </linearGradient>
+    <clipPath id="iconClip"><circle cx="256" cy="270" r="220"/></clipPath>
+  </defs>
+
+  <!-- Fondo transparente -->
+  <g clip-path="url(#iconClip)">
+    <!-- Mitades -->
+    <rect x="0" y="0" width="256" height="512" fill="#ffffff"/>
+    <rect x="256" y="0" width="256" height="512" fill="#0e0e12"/>
+
+    <!-- Orejas -->
+    <polygon points="140,170 90,90 190,130" fill="#ffffff" stroke="#ffb3d5" stroke-width="6"/>
+    <polygon points="372,170 422,90 322,130" fill="#0e0e12" stroke="#5c1117" stroke-width="6"/>
+    <polygon points="422,90 398,122 372,90" fill="#0e0e12"/>
+
+    <!-- Cabeza -->
+    <circle cx="256" cy="275" r="180" fill="#ffffff" stroke="#ffb3d5" stroke-width="6"/>
+    <path d="M256,95 a180,180 0 1,0 0,360" fill="#0e0e12" stroke="#5c1117" stroke-width="6"/>
+
+    <!-- Bandana -->
+    <path d="M70,245 Q256,165 442,245 L442,270 Q256,190 70,270 Z" fill="url(#pink)"/>
+    <path d="M256,165 Q256,165 442,245 L442,270 Q256,190 256,190 Z" fill="url(#red)"/>
+    <circle cx="400" cy="260" r="18" fill="url(#red)"/>
+
+    <!-- Ojos -->
+    <circle cx="206" cy="315" r="22" fill="#333"/>
+    <path d="M300,300 q30,0 60,12 q-30,24-60,24 q-30,0-60-24 q30-12 60-12z" fill="#f0f0f0"/>
+
+    <!-- Nariz -->
+    <path d="M230 352 C220 332 180 360 200 372 C212 378 230 360 230 360 C230 360 248 378 260 372 C280 360 240 332 230 352 Z" fill="#ff4c86"/>
+    <polygon points="246,358 256,370 266,358" fill="#ff3c3c"/>
+
+    <!-- Mejillas (lado Beautiful) -->
+    <circle cx="176" cy="360" r="16" fill="#ffd1e6"/>
+
+    <!-- Bigotes -->
+    <g stroke-linecap="round" stroke-width="8">
+      <path d="M96 330 H176 M96 360 H166" stroke="#e7a7c8"/>
+      <path d="M416 330 H336 M416 360 H346" stroke="#6a2a2a"/>
+    </g>
+
+    <!-- Cicatriz Warrior -->
+    <path d="M355 275 L290 350" stroke="#ff8a8a" stroke-width="10" stroke-linecap="round"/>
+  </g>
+</svg>
