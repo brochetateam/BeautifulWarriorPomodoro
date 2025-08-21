@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <title>Beautiful Warrior · Pomodoro</title>
 
   <!-- PWA -->
@@ -207,6 +207,30 @@
     }
 
     footer { padding: 12px 0 20px; text-align: center; color: var(--muted); font-size: 13px; }
+    
+    /* Prevent scrolling in mobile PWA */
+    @media (max-width: 640px) {
+      body {
+        position: fixed;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    
+    .standalone-mode {
+      /* Prevent text selection */
+      -webkit-user-select: none;
+      user-select: none;
+      
+      /* Prevent context menu */
+      touch-action: none;
+    }
+    
+    .standalone-mode * {
+      /* Allow interaction with controls */
+      touch-action: manipulation;
+    }
   </style>
 </head>
 
@@ -783,6 +807,16 @@
     }
 
     function init(){
+      // Detect standalone mode and prevent touch behaviors
+      if (window.matchMedia('(display-mode: standalone)').matches) {
+        document.documentElement.classList.add('standalone-mode');
+        
+        // Prevent pinch-zoom
+        document.addEventListener('touchmove', function(e) {
+          if (e.touches.length > 1) e.preventDefault();
+        }, { passive: false });
+      }
+
       loadState(); setupMode('work'); spawnDecor(); setDocTitle(); sizeCatToTitle();
       if('serviceWorker' in navigator){ window.addEventListener('load', ()=>{ navigator.serviceWorker.register('./sw.js').catch(console.error); }); }
     }
