@@ -189,25 +189,41 @@
     /* Móvil */
     @media (max-width: 640px) {
       .brand { align-items: flex-start; }
-      .brand h1 { font-size: clamp(18px, 6vw, 22px); }
+      .brand h1 { font-size: clamp(16px, 5vw, 20px); }
       .product-badge { display: none; }
-      .product-badge.product-mobile { display: inline-block; font-size: 30px; padding: 6px 16px; margin: 8px auto 0; background: linear-gradient(180deg, var(--btn-bg), var(--btn-bg-2)); color: #fff; box-shadow: 0 8px 18px -6px var(--glow); }
+      .product-badge.product-mobile { display: inline-block; font-size: 36px; padding: 4px 12px; margin: 6px auto 0; background: linear-gradient(180deg, var(--btn-bg), var(--btn-bg-2)); color: #fff; box-shadow: 0 6px 14px -4px var(--glow); }
 
-      .right-controls { position: absolute; top: 6px; right: 10px; flex-direction: column; align-items: flex-end; gap: 6px; }
-      .right-actions-row { gap: 6px; }
-      .theme-btn, .install-btn { width: 44px; height: 44px; padding: 0; justify-content: center; border-radius: 50%; }
+      .right-controls { position: absolute; top: 6px; right: 10px; flex-direction: column; align-items: flex-end; gap: 4px; }
+      .right-actions-row { gap: 4px; }
+      .theme-btn, .install-btn { width: 36px; height: 36px; padding: 0; justify-content: center; border-radius: 50%; }
       #theme-label, #install-label { display: none; }
 
-      .mode-line { grid-template-columns: 1fr; justify-items: center; }
-      .mode-title, .mode-sub { text-align: center; }
+      .mode-line { grid-template-columns: 1fr; justify-items: center; gap: 6px; }
+      .mode-title { font-size: clamp(16px, 4.5vw, 24px); }
+      .mode-sub { font-size: 13px; }
 
       .btn .btn-label { display: none; }
       #settings-btn { display: none; }
       #settings-fab { display: grid; }
+
+      /* Make timer smaller to fit everything */
+      .timer-ring { width: min(68vw, 300px); }
+      .time-display { font-size: clamp(32px, 11vw, 60px); }
+
+      /* Compact card layout */
+      .card { margin: 8px auto 12px; padding: clamp(10px, 2.8vw, 18px); }
+      .ring-wrap { padding: clamp(4px, 1.8vw, 12px); }
+      .controls { gap: 8px; margin-top: 12px; }
+      .controls .btn { font-size: 13px; padding: 10px 12px; }
+
+      /* Compact footer */
+      footer { padding: 8px 0 12px; font-size: 12px; }
+      .cta-row { margin-top: 8px; }
+      .glow-cta { padding: 8px 12px; font-size: 13px; }
     }
 
     footer { padding: 12px 0 20px; text-align: center; color: var(--muted); font-size: 13px; }
-    
+
     /* Prevent scrolling in mobile PWA */
     @media (max-width: 640px) {
       body {
